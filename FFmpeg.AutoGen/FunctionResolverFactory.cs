@@ -8,19 +8,27 @@ public static class FunctionResolverFactory
 {
     public static PlatformID GetPlatformId()
     {
-#if NETSTANDARD2_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return PlatformID.Win32NT;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return PlatformID.Unix;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) return PlatformID.MacOSX;
-        throw new PlatformNotSupportedException();
 #else
         return Environment.OSVersion.Platform;
 
 #endif
+        throw new PlatformNotSupportedException();
+
     }
 
     public static IFunctionResolver Create()
     {
+#if NET5_0_OR_GREATER
+        if (OperatingSystem.IsWindows()) return new WindowsFunctionResolver();
+        if (OperatingSystem.IsLinux()) return new LinuxFunctionResolver();
+        if (OperatingSystem.IsMacOS() || OperatingSystem.IsIOS() || OperatingSystem.IsMacCatalyst() || OperatingSystem.IsTvOS() || OperatingSystem.IsWatchOS()) return new MacFunctionResolver();
+        if(OperatingSystem.IsAndroid()) return new AndroidFunctionResolver();
+        throw new PlatformNotSupportedException($"Your platform is not supported yet.");
+#else
         switch (GetPlatformId())
         {
             case PlatformID.MacOSX:
@@ -32,5 +40,7 @@ public static class FunctionResolverFactory
             default:
                 throw new PlatformNotSupportedException();
         }
+
+#endif
     }
 }

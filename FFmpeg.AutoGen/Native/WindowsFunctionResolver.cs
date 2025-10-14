@@ -7,9 +7,21 @@ public class WindowsFunctionResolver : FunctionResolverBase
 {
     private const string Kernel32 = "kernel32";
 
-    protected override string GetNativeLibraryName(string libraryName, int version) => $"{libraryName}-{version}.dll";
+    protected override string GetNativeLibraryName(string libraryName, int version, bool addVersionSuffixToLibraryPath) => addVersionSuffixToLibraryPath ? $"{libraryName}-{version}.dll" : $"{libraryName}.dll";
 
-    protected override IntPtr LoadNativeLibrary(string libraryName) => LoadLibrary(libraryName);
+    protected override IntPtr LoadNativeLibrary(string libraryName)
+    {
+        IntPtr handle = LoadLibrary(libraryName);
+
+        if (handle == IntPtr.Zero)
+        {
+            int errorCode = Marshal.GetLastWin32Error();
+            string errorMessage = new System.ComponentModel.Win32Exception(errorCode).Message;
+            throw new DllNotFoundException($"Failed to load native library '{libraryName}'. Error code: {errorCode}, Message: {errorMessage}");
+        }
+
+        return handle;
+    }
     protected override IntPtr FindFunctionPointer(IntPtr nativeLibraryHandle, string functionName) => GetProcAddress(nativeLibraryHandle, functionName);
 
 

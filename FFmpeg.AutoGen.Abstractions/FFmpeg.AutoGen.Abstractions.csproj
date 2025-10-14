@@ -3,9 +3,13 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
     <Description>
-      FFmpeg auto generated unsafe bindings for C#/.NET and Mono. An abstraction API has been created specifically for use in .NET MAUI scenarios.
-      This API can be utilized in conjunction with either the FFmpeg.AutoGen.Bindings.DynamicallyLinked, FFmpeg.AutoGen.Bindings.DynamicallyLoaded or FFmpeg.AutoGen.Bindings.StaticallyLinked package.
-    </Description>
+			This is a fix of origin FFmpeg.AutoGen which allows it running on modern .NET Runtime, due to .NET 5+ unification of .NET Framework and .NET Core into single .NET platform.
+
+			---
+
+			FFmpeg auto generated unsafe bindings for C#/.NET and Mono. An abstraction API has been created specifically for use in .NET MAUI scenarios.
+			This API can be utilized in conjunction with either the FFmpeg.AutoGen.Bindings.DynamicallyLinked, FFmpeg.AutoGen.Bindings.DynamicallyLoaded or FFmpeg.AutoGen.Bindings.StaticallyLinked package.
+		</Description>
     <GeneratePackageOnBuild Condition=" $(Configuration) == 'Release' ">true</GeneratePackageOnBuild>
   </PropertyGroup>
 
@@ -21,6 +25,11 @@
     <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Authors>hexadecimal0x12e</Authors>
+    <Company>nope</Company>
+    <Copyright>Copyright © hexadecimal0x12e 2025 All rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/hexadecimal0x12e/FFmpeg.AutoGen_droidFix</PackageProjectUrl>
+    <PackageId>FFmpeg_droidFix.AutoGen.Abstractions</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

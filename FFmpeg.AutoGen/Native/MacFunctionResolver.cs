@@ -9,7 +9,7 @@ public class MacFunctionResolver : FunctionResolverBase
 
     private const int RTLD_NOW = 0x002;
 
-    protected override string GetNativeLibraryName(string libraryName, int version) => $"lib{libraryName}.{version}.dylib";
+    protected override string GetNativeLibraryName(string libraryName, int version, bool _) => $"lib{libraryName}.{version}.dylib";
     protected override IntPtr LoadNativeLibrary(string libraryName) => dlopen(libraryName, RTLD_NOW);
     protected override IntPtr FindFunctionPointer(IntPtr nativeLibraryHandle, string functionName) => dlsym(nativeLibraryHandle, functionName);
 
