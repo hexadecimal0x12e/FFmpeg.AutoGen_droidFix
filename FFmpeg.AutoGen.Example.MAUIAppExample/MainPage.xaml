@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FFmpeg.AutoGen.Example.MAUIAppExample.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Label x:Name="FFmpegInfoEntry" Text="FFmpeg's info will appear here"/>
+            <Button Text="1. Click here to open a video" x:Name="OpenVideoBtn" Clicked="OpenVideoBtn_Clicked"/>
+            <Entry x:Name="VideoPathEntry" Placeholder="Video path will appear here" IsReadOnly="True"/>
+            <Entry x:Name="FrameIndexEntry" Placeholder="2. Enter frame index to extract" Keyboard="Numeric"/>
+            <Button x:Name="ExtractButton" Text="3. Extract" Clicked="ExtractButton_Clicked"/>
+            <Image x:Name="ExtractedFrameImage" Aspect="AspectFit" HeightRequest="300"/>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

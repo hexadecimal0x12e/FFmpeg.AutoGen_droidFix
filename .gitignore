@@ -111,3 +111,7 @@ UpgradeLog*.XML
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+
+/FFmpeg.AutoGen.Example.MAUIAppExample/Platforms/Android/ffmpeg/arm64-v8a
+/FFmpeg/bin/x64

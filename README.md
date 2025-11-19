@@ -1,3 +1,17 @@
+## What changed from original project:
+
+As very beginning of making projectFrameCut, I selected this library to decode videos, etc. because this thing can let me call FFmpeg and read out frame directly, by all C# Managed code, save my time and increase the speed.
+
+When I'm trying to test projectFrameCut on Android, while I try to call this library on the Android platform, I found that I kept receiving the "PlatformNotSupportedException" error. After some diagnosis, I discovered that it was caused by the changes in .NET 5+ to System.OSPlatform. So that I fixed [this](https://github.com/Ruslan-B/FFmpeg.AutoGen/blob/master/FFmpeg.AutoGen/FunctionResolverFactory.cs#L15) file by use the modern [System.OperatingSystem API](https://learn.microsoft.com/dotnet/api/system.operatingsystem?view=net-9.0), also I added a Function Resolver for Android.
+
+But, I found this is not the only problem while running on Android devices. After this fix, I start receive a "DllImportException" when I try to call the library, after days of fix, I finally discover why: "libdl.so.2" isn't exists on Android devices, and [dlopen](https://www.man7.org/linux/man-pages/man3/dlopen.3.html) moved to "libc.so" instead of libdl. I also added a user-friendly exception processing telling why libraries failed to load.
+
+I also added a property ```AddVersionSuffixToLibraryPath```that allows you to manually disable adding a version suffix to library names when attempting to load a library. This can resolve issues where certain platforms remove the version suffix when packaging the application.
+
+This fork is fully compatible with the original FFmpeg.AutoGen library (8.0.0 branch). 
+
+[![NuGet Version](https://img.shields.io/nuget/v/FFmpeg_droidFix.AutoGen)](https://www.nuget.org/packages/FFmpeg_droidFix.AutoGen/) get the fork here
+
 ## Important Announcement
 
 **This project is undergoing a transition to a semi-managed model over the coming months.**
@@ -37,16 +51,64 @@ Native ffmpeg libraries are pre bundled in this repository, please note the are 
 The x64 libraries source from [CODEX FFMPEG](https://www.gyan.dev/ffmpeg/builds/).
 Please check to example project it shows how specify path to libraries.  
 
-- on OS X:  
+- on MacOS (mostly Console application, not MacCatalyst):  
 Install ffmpeg via [Homebrew](https://formulae.brew.sh/formula/ffmpeg):
 ```bash
 brew install ffmpeg
 ```
 Normally you need to set static ```ffmpeg.RootPath = ``` with full path to FFmpeg libraries.
 
+- on iOS/iPadOS/TvOS/WatchOS/VisionOS/MacCatalyst, etc. (.NET MAUI):
+todo
+
+- on Android (.NET MAUI):
+
+add these code to ```MauiProgram.cs```:
+```csharp
+#if ANDROID
+ffmpeg.RootPath = Android.App.Application.Context.ApplicationInfo.NativeLibraryDir;
+JavaSystem.LoadLibrary("c");
+#endif
+```
+
+Then, create a directory inside ```<your .NET MAUI project root path>/Platforms/Android/```, name it whatever you want. Create a folder named same as the FFmpeg libraries' ABI name (like ```arm64-v8a```) your get/compile inside the folder your created. Put all ```.so``` files inside it, don't add any suffix or prefix.
+
+Then, add these things to the project's ```.csproj``` file:
+```xml
+<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<AndroidNativeLibrary Include="Platforms\Android\<name of the directory your named>\**\*.so" />
+</ItemGroup>
+```
+Don't forget to replace ```<name of the directory your named>``` to the name of the directory your named in 2nd step.
+
+Your project's file structure should like this:
+```
+.
+|   
+|
+\---Platforms
+    +---Android
+    |   |   ......
+    |   |
+    |   +---Assets
+    |   +---ffmpeg
+    |   |   \---arm64-v8a
+    |   |           libavcodec.so
+    |   |           libavfilter.so
+    |   |           libavformat.so
+    |   |           libavutil.so
+    |   |           libswresample.so
+    |   |           libswscale.so
+    |   |
+    |   +---Resources
+    |   ......
+    |
+......
+```
+
 - on Linux:  
 Use your package manager of choice.
-Normally you need to set static ```ffmpeg.RootPath = ``` with full path to FFmpeg libraries.
+Normally you need to set static ```ffmpeg.RootPath = ...``` with full path to FFmpeg libraries.
 
 ## Generation
 
@@ -69,3 +131,6 @@ See LICENSE.txt for full license text.
 
 **Note:** FFmpeg binaries are distributed under their original licenses (GPL/LGPL) from the source.
 Please refer to [FFmpeg License](https://www.ffmpeg.org/legal.html) for details.
+
+The fork is created by hexadecimal0x12e.
+

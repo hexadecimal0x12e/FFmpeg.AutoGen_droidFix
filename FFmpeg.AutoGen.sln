@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31825.309
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11206.111 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFmpeg.AutoGen", "FFmpeg.AutoGen\FFmpeg.AutoGen.csproj", "{A536B02A-B0B1-4753-8328-17369EF09976}"
 EndProject
@@ -37,6 +37,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Legacy", "3. Legacy", "{0771FEE5-9700-4F09-99C4-EC36FD5AFEA9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Abstractions", "2. Abstractions", "{1B9CC2D2-096F-4D35-8940-DA6344450430}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFmpeg.AutoGen.Example.MAUIAppExample", "FFmpeg.AutoGen.Example.MAUIAppExample\FFmpeg.AutoGen.Example.MAUIAppExample.csproj", "{5FC629C0-8F80-4D46-95C9-5F885524F380}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +82,12 @@ Global
 		{028113A5-39CE-40A2-9118-56E99F30B4F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{028113A5-39CE-40A2-9118-56E99F30B4F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{028113A5-39CE-40A2-9118-56E99F30B4F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FC629C0-8F80-4D46-95C9-5F885524F380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FC629C0-8F80-4D46-95C9-5F885524F380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FC629C0-8F80-4D46-95C9-5F885524F380}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5FC629C0-8F80-4D46-95C9-5F885524F380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FC629C0-8F80-4D46-95C9-5F885524F380}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FC629C0-8F80-4D46-95C9-5F885524F380}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +103,7 @@ Global
 		{ED2E790B-9233-40BC-BA66-E3291AAA9878} = {F969EEDD-27A8-434B-A438-39C48BBAEFE6}
 		{C272CD0A-E13B-4E80-8CA2-2BEC8396D8D0} = {F969EEDD-27A8-434B-A438-39C48BBAEFE6}
 		{028113A5-39CE-40A2-9118-56E99F30B4F8} = {F969EEDD-27A8-434B-A438-39C48BBAEFE6}
+		{5FC629C0-8F80-4D46-95C9-5F885524F380} = {660FBA30-C9C0-44A6-B4C5-1C5030ED271D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BAFD2E8-8AAC-4483-B5FA-6E4C136A59F5}
