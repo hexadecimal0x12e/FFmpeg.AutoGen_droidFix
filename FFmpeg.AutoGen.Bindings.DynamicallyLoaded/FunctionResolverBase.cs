@@ -29,16 +29,12 @@ public abstract class FunctionResolverBase : IFunctionResolver
     {
         lock (_syncRoot)
         {
-            var nativeLibraryHandle = GetOrLoadLibrary(libraryName, throwOnError);
-            var ptr = GetFunctionPointer(nativeLibraryHandle, functionName);
+            var ptr = GetFunctionPointer(libraryName, functionName, throwOnError);
 
             if (ptr == IntPtr.Zero)
-            {
-                if (throwOnError) throw new EntryPointNotFoundException($"Could not find the entrypoint for {functionName}.");
                 return default;
-            }
 
-#if NETSTANDARD2_0_OR_GREATER
+#if NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER
             try
             {
                 return Marshal.GetDelegateForFunctionPointer<T>(ptr);
@@ -52,6 +48,23 @@ public abstract class FunctionResolverBase : IFunctionResolver
 #else
         return (T)(object)Marshal.GetDelegateForFunctionPointer(ptr, typeof(T));
 #endif
+        }
+    }
+
+    public IntPtr GetFunctionPointer(string libraryName, string functionName, bool throwOnError = true)
+    {
+        lock (_syncRoot)
+        {
+            var nativeLibraryHandle = GetOrLoadLibrary(libraryName, throwOnError);
+            var ptr = GetFunctionPointer(nativeLibraryHandle, functionName);
+
+            if (ptr == IntPtr.Zero)
+            {
+                if (throwOnError) throw new EntryPointNotFoundException($"Could not find the entrypoint for {functionName}.");
+                return default;
+            }
+
+            return ptr;
         }
     }
 

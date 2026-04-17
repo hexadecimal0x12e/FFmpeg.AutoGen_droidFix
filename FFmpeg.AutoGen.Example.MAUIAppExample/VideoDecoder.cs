@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace projectFrameCut.Render
 {
 
-    public sealed unsafe class VideoDecoder : IDisposable
+    public sealed unsafe class VideoDecoder : IDisposable //from projectFrameCut
     {
         private readonly string _path;
         private AVFormatContext* _fmt = null;

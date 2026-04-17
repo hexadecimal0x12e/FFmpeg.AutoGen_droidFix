@@ -1,4 +1,5 @@
 ﻿using projectFrameCut.Render;
+using System.Diagnostics;
 
 namespace FFmpeg.AutoGen.Example.MAUIAppExample
 {
@@ -14,6 +15,7 @@ namespace FFmpeg.AutoGen.Example.MAUIAppExample
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.ToString());
                 verStr = $"Error getting FFmpeg version info: {ex.Message}";
             }
             FFmpegInfoEntry.Text = verStr;

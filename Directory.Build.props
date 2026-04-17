@@ -1,12 +1,12 @@
 <Project>
   <PropertyGroup>
     <PackageId>$(AssemblyName)</PackageId>
-    <Version>8.0.0.0</Version>
-    <Authors>Ruslan Balanukhin</Authors>
-    <Company>Rationale One</Company>
-    <Product>FFmpeg.AutoGen</Product>
-    <Copyright>Copyright © Ruslan Balanukhin 2025 All rights reserved.</Copyright>
-    <PackageProjectUrl>https://github.com/Ruslan-B/FFmpeg.AutoGen</PackageProjectUrl>
+    <Version>8.1.0.0</Version>
+    <Authors>hexadecimal0x12e</Authors>
+    <Company>hexadecimal0x12e</Company>
+		<Copyright>Copyright © hexadecimal0x12e 2025-2026 All rights reserved.</Copyright>
+		<PackageProjectUrl>https://github.com/hexadecimal0x12e/FFmpeg.AutoGen_droidFix</PackageProjectUrl>
+		<PackageId>FFmpeg_droidFix.AutoGen</PackageId>
     <RepositoryType>Git</RepositoryType>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>

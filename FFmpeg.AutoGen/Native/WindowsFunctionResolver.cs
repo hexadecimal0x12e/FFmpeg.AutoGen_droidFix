@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace FFmpeg.AutoGen.Native;
 
-public class WindowsFunctionResolver : FunctionResolverBase
+public partial class WindowsFunctionResolver : FunctionResolverBase
 {
     private const string Kernel32 = "kernel32";
 
@@ -25,8 +25,8 @@ public class WindowsFunctionResolver : FunctionResolverBase
     protected override IntPtr FindFunctionPointer(IntPtr nativeLibraryHandle, string functionName) => GetProcAddress(nativeLibraryHandle, functionName);
 
 
-    [DllImport(Kernel32, CharSet = CharSet.Ansi, BestFitMapping = false)]
-    public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
+    [LibraryImport(Kernel32, EntryPoint = "GetProcAddress", StringMarshalling = StringMarshalling.Utf8)]
+    public static partial IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
 
     /// <summary>
     ///     Loads the specified module into the address space of the calling process. The specified module may cause other
@@ -67,6 +67,6 @@ public class WindowsFunctionResolver : FunctionResolverBase
     ///     <see cref="Marshal.GetLastWin32Error" />.
     /// </returns>
     /// <seealso href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684175(v=vs.85).aspx" />
-    [DllImport(Kernel32, SetLastError = true)]
-    public static extern IntPtr LoadLibrary(string dllToLoad);
+    [LibraryImport(Kernel32, EntryPoint = "LoadLibraryW", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
+    public static partial IntPtr LoadLibrary(string dllToLoad);
 }

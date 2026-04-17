@@ -29,6 +29,12 @@ internal class Program
 
         // process
         var functionExports = FunctionExportHelper.LoadFunctionExports(options.FFmpegBinDir).ToArray();
+        if (functionExports.Length == 0 && !options.AllowUnexportedFunctions)
+            throw new InvalidOperationException(
+                "No exported functions were discovered from FFmpeg binaries. " +
+                "Make sure FFmpeg/bin/x64 contains versioned Windows DLLs (for example: avcodec-61.dll), " +
+                "or rerun with --allow-unexported-functions to generate from headers only.");
+
         var processingContext = new ProcessingContext
         {
             IgnoreUnitNames = new HashSet<string> { "__NSConstantString_tag" },
@@ -50,6 +56,7 @@ internal class Program
                 .Select(x => x.First()) // Eliminate duplicated names
                 .ToDictionary(x => x.Name),
             NoCustomStringMarshal = options.NoCustomStringMarshal,
+            AllowUnexportedFunctions = options.AllowUnexportedFunctions,
         };
         var processor = new ASTProcessor(processingContext);
         astContexts.ForEach(processor.Process);

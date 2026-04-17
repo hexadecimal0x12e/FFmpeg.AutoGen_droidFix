@@ -7,7 +7,9 @@ using System.Runtime.InteropServices;
 
 namespace FFmpeg.AutoGen;
 
-
+#if !DEBUG
+[DebuggerNonUserCode()]
+#endif
 public abstract class FunctionResolverBase : IFunctionResolver
 {
     /// <summary>
@@ -25,10 +27,9 @@ public abstract class FunctionResolverBase : IFunctionResolver
         {
             { "avcodec", new[] { "avutil", "swresample" } },
             { "avdevice", new[] { "avcodec", "avfilter", "avformat", "avutil" } },
-            { "avfilter", new[] { "avcodec", "avformat", "avutil", "postproc", "swresample", "swscale" } },
+            { "avfilter", new[] { "avcodec", "avformat", "avutil", "swresample", "swscale" } },
             { "avformat", new[] { "avcodec", "avutil" } },
-            { "avutil", new string[] { } },
-            { "postproc", new[] { "avutil" } },
+            { "avutil", Array.Empty<string>() },
             { "swresample", new[] { "avutil" } },
             { "swscale", new[] { "avutil" } }
         };
@@ -39,21 +40,12 @@ public abstract class FunctionResolverBase : IFunctionResolver
 
     public T GetFunctionDelegate<T>(string libraryName, string functionName, bool throwOnError = true)
     {
-        var nativeLibraryHandle = GetOrLoadLibrary(libraryName, throwOnError);
-        return GetFunctionDelegate<T>(nativeLibraryHandle, functionName, throwOnError);
-    }
-
-    public T GetFunctionDelegate<T>(IntPtr nativeLibraryHandle, string functionName, bool throwOnError)
-    {
-        var functionPointer = FindFunctionPointer(nativeLibraryHandle, functionName);
+        var functionPointer = GetFunctionPointer(libraryName, functionName, throwOnError);
 
         if (functionPointer == IntPtr.Zero)
-        {
-            if (throwOnError) throw new EntryPointNotFoundException($"Could not find the entrypoint for {functionName}.");
             return default;
-        }
 
-#if NETSTANDARD2_0_OR_GREATER
+#if NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER
         try
         {
             return Marshal.GetDelegateForFunctionPointer<T>(functionPointer);
@@ -69,6 +61,20 @@ public abstract class FunctionResolverBase : IFunctionResolver
 #endif
     }
 
+    public IntPtr GetFunctionPointer(string libraryName, string functionName, bool throwOnError = true)
+    {
+        var nativeLibraryHandle = GetOrLoadLibrary(libraryName, throwOnError);
+        var functionPointer = FindFunctionPointer(nativeLibraryHandle, functionName);
+
+        if (functionPointer == IntPtr.Zero)
+        {
+            if (throwOnError) throw new EntryPointNotFoundException($"Could not find the entrypoint for {functionName}.");
+            return default;
+        }
+
+        return functionPointer;
+    }
+
     public IntPtr GetOrLoadLibrary(string libraryName, bool throwOnError)
     {
         Debug.WriteLine($"Requesting library {libraryName}");
@@ -78,7 +84,7 @@ public abstract class FunctionResolverBase : IFunctionResolver
         {
             if (_loadedLibraries.TryGetValue(libraryName, out ptr)) return ptr;
 
-            var dependencies = LibraryDependenciesMap[libraryName];
+            if (!LibraryDependenciesMap.TryGetValue(libraryName, out var dependencies)) throw new DllNotFoundException($"Could not found library {libraryName}'s dependencies.");
             foreach (var item in dependencies.Where(n => !_loadedLibraries.ContainsKey(n) && !n.Equals(libraryName)))
             {
                 Debug.WriteLine($"Loading dependency {item} for {libraryName}");
@@ -89,18 +95,7 @@ public abstract class FunctionResolverBase : IFunctionResolver
             string nativeLibraryName = GetNativeLibraryName(libraryName, version, AddVersionSuffixToLibraryPath);
 
             var libraryPath = Path.Combine(ffmpeg.RootPath, nativeLibraryName);
-            if (!File.Exists(libraryPath))
-            {
-                try
-                {
-                    ptr = LoadNativeLibrary(libraryName);
-                }
-                catch(Exception ex)
-                {
-                    throw new DllNotFoundException($"The {libraryName} located at {libraryPath} does not actually exist, and it is also not in the default location or the library failed to load from the default location."); //no one wants to see a DllNotFoundException with a very confused message 'libdl.so.2'
-                }
-            }
-            else
+            if (File.Exists(libraryPath))
             {
                 try
                 {
@@ -108,17 +103,12 @@ public abstract class FunctionResolverBase : IFunctionResolver
                 }
                 catch (Exception ex)
                 {
-                    try
-                    {
-                        ptr = LoadNativeLibrary(libraryName);
-
-                    }
-                    catch (Exception ex1)
-                    {
-                        throw new DllNotFoundException($"The {libraryName} located at {libraryPath} and this library in the default location is all failed to load.", new AggregateException([ex,ex1]));
-                    }
-                    
+                    throw new BadImageFormatException($"Could not load {libraryName} because '{ex.Message}'.", ex); //no one wants to see a DllNotFoundException with a very confused message 'libdl.so.2'
                 }
+            }
+            else
+            {
+                throw new DllNotFoundException($"The {libraryName} is not found at {ffmpeg.RootPath}.");
             }
 
 
