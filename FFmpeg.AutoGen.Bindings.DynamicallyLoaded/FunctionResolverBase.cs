@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -60,10 +61,11 @@ public abstract class FunctionResolverBase : IFunctionResolver
 
             if (ptr == IntPtr.Zero)
             {
-                if (throwOnError) throw new EntryPointNotFoundException($"Could not find the entrypoint for {functionName}.");
+                Trace.WriteLine($"[FFmpeg.AutoGen] Could not find the entrypoint for {functionName} in library '{libraryName}'.");
+                if (throwOnError) throw new EntryPointNotFoundException($"Could not find the entrypoint for {functionName} in library '{libraryName}' .");
                 return default;
             }
-
+            Debug.WriteLine($"Resolved function '{functionName}' from library '{libraryName}' in 0x{nativeLibraryHandle.ToString("X16")} at address 0x{ptr.ToString("X16")}.");
             return ptr;
         }
     }

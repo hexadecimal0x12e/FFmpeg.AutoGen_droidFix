@@ -14,14 +14,17 @@ namespace FFmpeg.AutoGen.Example.MAUIAppExample
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+#if !WINDOWS //make sure aot compilation works on windows, otherwise we can use the same font configuration for all platforms
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+#endif
+            ;
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
 #if ANDROID

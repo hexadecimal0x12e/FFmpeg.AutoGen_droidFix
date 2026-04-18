@@ -20,7 +20,8 @@ internal class Program
         Console.WriteLine("Running in {0}-bit mode.", Environment.Is64BitProcess ? "64" : "32");
 
         FFmpegBinariesHelper.RegisterFFmpegBinaries();
-        
+
+        DynamicallyLoadedBindings.ThrowErrorIfFunctionNotFound = true;
         DynamicallyLoadedBindings.Initialize();
 
         Console.WriteLine($"FFmpeg version info: {ffmpeg.av_version_info()}");
@@ -100,7 +101,7 @@ internal class Program
     {
         // decode all frames from url, please not it might local resorce, e.g. string url = "../../sample_mpeg4.mp4";
         
-        var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"; // be advised this file holds 1440 frames
+        var url = "https://lorem.video/1280x720"; // be advised this file holds 1440 frames
         using var vsd = new VideoStreamDecoder(url, HWDevice);
 
         Console.WriteLine($"codec name: {vsd.CodecName}");

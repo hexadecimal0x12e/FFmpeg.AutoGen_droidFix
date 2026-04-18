@@ -14,7 +14,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_add_index_entry = (AVStream* @st, long @pos, long @timestamp, int @size, int @distance, int @flags) =>
         {
-            var av_add_index_entry_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_add_index_entry", ThrowErrorIfFunctionNotFound);
+            var av_add_index_entry_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_add_index_entry", ThrowErrorIfFunctionNotFound);
             vectors.av_add_index_entry = av_add_index_entry_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_add_index_entry_delegate>(av_add_index_entry_ptr);
             return vectors.av_add_index_entry(@st, @pos, @timestamp, @size, @distance, @flags);
         };
@@ -35,7 +35,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_append_packet = (AVIOContext* @s, AVPacket* @pkt, int @size) =>
         {
-            var av_append_packet_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_append_packet", ThrowErrorIfFunctionNotFound);
+            var av_append_packet_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_append_packet", ThrowErrorIfFunctionNotFound);
             vectors.av_append_packet = av_append_packet_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_append_packet_delegate>(av_append_packet_ptr);
             return vectors.av_append_packet(@s, @pkt, @size);
         };
@@ -728,42 +728,42 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_codec_get_id = (AVCodecTag** @tags, uint @tag) =>
         {
-            var av_codec_get_id_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_codec_get_id", ThrowErrorIfFunctionNotFound);
+            var av_codec_get_id_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_codec_get_id", ThrowErrorIfFunctionNotFound);
             vectors.av_codec_get_id = av_codec_get_id_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_codec_get_id_delegate>(av_codec_get_id_ptr);
             return vectors.av_codec_get_id(@tags, @tag);
         };
         
         vectors.av_codec_get_tag = (AVCodecTag** @tags, AVCodecID @id) =>
         {
-            var av_codec_get_tag_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_codec_get_tag", ThrowErrorIfFunctionNotFound);
+            var av_codec_get_tag_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_codec_get_tag", ThrowErrorIfFunctionNotFound);
             vectors.av_codec_get_tag = av_codec_get_tag_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_codec_get_tag_delegate>(av_codec_get_tag_ptr);
             return vectors.av_codec_get_tag(@tags, @id);
         };
         
         vectors.av_codec_get_tag2 = (AVCodecTag** @tags, AVCodecID @id, uint* @tag) =>
         {
-            var av_codec_get_tag2_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_codec_get_tag2", ThrowErrorIfFunctionNotFound);
+            var av_codec_get_tag2_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_codec_get_tag2", ThrowErrorIfFunctionNotFound);
             vectors.av_codec_get_tag2 = av_codec_get_tag2_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_codec_get_tag2_delegate>(av_codec_get_tag2_ptr);
             return vectors.av_codec_get_tag2(@tags, @id, @tag);
         };
         
         vectors.av_codec_is_decoder = (AVCodec* @codec) =>
         {
-            var av_codec_is_decoder_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_codec_is_decoder", ThrowErrorIfFunctionNotFound);
+            var av_codec_is_decoder_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_codec_is_decoder", ThrowErrorIfFunctionNotFound);
             vectors.av_codec_is_decoder = av_codec_is_decoder_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_codec_is_decoder_delegate>(av_codec_is_decoder_ptr);
             return vectors.av_codec_is_decoder(@codec);
         };
         
         vectors.av_codec_is_encoder = (AVCodec* @codec) =>
         {
-            var av_codec_is_encoder_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_codec_is_encoder", ThrowErrorIfFunctionNotFound);
+            var av_codec_is_encoder_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_codec_is_encoder", ThrowErrorIfFunctionNotFound);
             vectors.av_codec_is_encoder = av_codec_is_encoder_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_codec_is_encoder_delegate>(av_codec_is_encoder_ptr);
             return vectors.av_codec_is_encoder(@codec);
         };
         
         vectors.av_codec_iterate = (void** @opaque) =>
         {
-            var av_codec_iterate_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_codec_iterate", ThrowErrorIfFunctionNotFound);
+            var av_codec_iterate_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_codec_iterate", ThrowErrorIfFunctionNotFound);
             vectors.av_codec_iterate = av_codec_iterate_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_codec_iterate_delegate>(av_codec_iterate_ptr);
             return vectors.av_codec_iterate(@opaque);
         };
@@ -840,7 +840,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_container_fifo_alloc_avpacket = (uint @flags) =>
         {
-            var av_container_fifo_alloc_avpacket_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_container_fifo_alloc_avpacket", ThrowErrorIfFunctionNotFound);
+            var av_container_fifo_alloc_avpacket_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_container_fifo_alloc_avpacket", ThrowErrorIfFunctionNotFound);
             vectors.av_container_fifo_alloc_avpacket = av_container_fifo_alloc_avpacket_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_container_fifo_alloc_avpacket_delegate>(av_container_fifo_alloc_avpacket_ptr);
             return vectors.av_container_fifo_alloc_avpacket(@flags);
         };
@@ -861,7 +861,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_cpb_properties_alloc = (ulong* @size) =>
         {
-            var av_cpb_properties_alloc_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_cpb_properties_alloc", ThrowErrorIfFunctionNotFound);
+            var av_cpb_properties_alloc_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_cpb_properties_alloc", ThrowErrorIfFunctionNotFound);
             vectors.av_cpb_properties_alloc = av_cpb_properties_alloc_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_cpb_properties_alloc_delegate>(av_cpb_properties_alloc_ptr);
             return vectors.av_cpb_properties_alloc(@size);
         };
@@ -896,7 +896,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_d3d11va_alloc_context = () =>
         {
-            var av_d3d11va_alloc_context_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_d3d11va_alloc_context", ThrowErrorIfFunctionNotFound);
+            var av_d3d11va_alloc_context_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_d3d11va_alloc_context", ThrowErrorIfFunctionNotFound);
             vectors.av_d3d11va_alloc_context = av_d3d11va_alloc_context_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_d3d11va_alloc_context_delegate>(av_d3d11va_alloc_context_ptr);
             return vectors.av_d3d11va_alloc_context();
         };
@@ -917,7 +917,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_demuxer_iterate = (void** @opaque) =>
         {
-            var av_demuxer_iterate_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_demuxer_iterate", ThrowErrorIfFunctionNotFound);
+            var av_demuxer_iterate_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_demuxer_iterate", ThrowErrorIfFunctionNotFound);
             vectors.av_demuxer_iterate = av_demuxer_iterate_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_demuxer_iterate_delegate>(av_demuxer_iterate_ptr);
             return vectors.av_demuxer_iterate(@opaque);
         };
@@ -1008,14 +1008,14 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_disposition_from_string = (string @disp) =>
         {
-            var av_disposition_from_string_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_disposition_from_string", ThrowErrorIfFunctionNotFound);
+            var av_disposition_from_string_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_disposition_from_string", ThrowErrorIfFunctionNotFound);
             vectors.av_disposition_from_string = av_disposition_from_string_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_disposition_from_string_delegate>(av_disposition_from_string_ptr);
             return vectors.av_disposition_from_string(@disp);
         };
         
         vectors.av_disposition_to_string = (int @disposition) =>
         {
-            var av_disposition_to_string_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_disposition_to_string", ThrowErrorIfFunctionNotFound);
+            var av_disposition_to_string_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_disposition_to_string", ThrowErrorIfFunctionNotFound);
             vectors.av_disposition_to_string = av_disposition_to_string_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_disposition_to_string_delegate>(av_disposition_to_string_ptr);
             return vectors.av_disposition_to_string(@disposition);
         };
@@ -1029,7 +1029,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_dump_format = (AVFormatContext* @ic, int @index, string @url, int @is_output) =>
         {
-            var av_dump_format_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_dump_format", ThrowErrorIfFunctionNotFound);
+            var av_dump_format_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_dump_format", ThrowErrorIfFunctionNotFound);
             vectors.av_dump_format = av_dump_format_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_dump_format_delegate>(av_dump_format_ptr);
             vectors.av_dump_format(@ic, @index, @url, @is_output);
         };
@@ -1099,14 +1099,14 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_fast_padded_malloc = (void* @ptr, uint* @size, ulong @min_size) =>
         {
-            var av_fast_padded_malloc_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_fast_padded_malloc", ThrowErrorIfFunctionNotFound);
+            var av_fast_padded_malloc_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_fast_padded_malloc", ThrowErrorIfFunctionNotFound);
             vectors.av_fast_padded_malloc = av_fast_padded_malloc_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_fast_padded_malloc_delegate>(av_fast_padded_malloc_ptr);
             vectors.av_fast_padded_malloc(@ptr, @size, @min_size);
         };
         
         vectors.av_fast_padded_mallocz = (void* @ptr, uint* @size, ulong @min_size) =>
         {
-            var av_fast_padded_mallocz_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_fast_padded_mallocz", ThrowErrorIfFunctionNotFound);
+            var av_fast_padded_mallocz_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_fast_padded_mallocz", ThrowErrorIfFunctionNotFound);
             vectors.av_fast_padded_mallocz = av_fast_padded_mallocz_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_fast_padded_mallocz_delegate>(av_fast_padded_mallocz_ptr);
             vectors.av_fast_padded_mallocz(@ptr, @size, @min_size);
         };
@@ -1134,14 +1134,14 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_filename_number_test = (string @filename) =>
         {
-            var av_filename_number_test_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_filename_number_test", ThrowErrorIfFunctionNotFound);
+            var av_filename_number_test_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_filename_number_test", ThrowErrorIfFunctionNotFound);
             vectors.av_filename_number_test = av_filename_number_test_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_filename_number_test_delegate>(av_filename_number_test_ptr);
             return vectors.av_filename_number_test(@filename);
         };
         
         vectors.av_filter_iterate = (void** @opaque) =>
         {
-            var av_filter_iterate_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_filter_iterate", ThrowErrorIfFunctionNotFound);
+            var av_filter_iterate_ptr = FunctionResolver.GetFunctionPointer("avfilter", "av_filter_iterate", ThrowErrorIfFunctionNotFound);
             vectors.av_filter_iterate = av_filter_iterate_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_filter_iterate_delegate>(av_filter_iterate_ptr);
             return vectors.av_filter_iterate(@opaque);
         };
@@ -1155,21 +1155,21 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_find_best_stream = (AVFormatContext* @ic, AVMediaType @type, int @wanted_stream_nb, int @related_stream, AVCodec** @decoder_ret, int @flags) =>
         {
-            var av_find_best_stream_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_find_best_stream", ThrowErrorIfFunctionNotFound);
+            var av_find_best_stream_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_find_best_stream", ThrowErrorIfFunctionNotFound);
             vectors.av_find_best_stream = av_find_best_stream_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_find_best_stream_delegate>(av_find_best_stream_ptr);
             return vectors.av_find_best_stream(@ic, @type, @wanted_stream_nb, @related_stream, @decoder_ret, @flags);
         };
         
         vectors.av_find_default_stream_index = (AVFormatContext* @s) =>
         {
-            var av_find_default_stream_index_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_find_default_stream_index", ThrowErrorIfFunctionNotFound);
+            var av_find_default_stream_index_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_find_default_stream_index", ThrowErrorIfFunctionNotFound);
             vectors.av_find_default_stream_index = av_find_default_stream_index_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_find_default_stream_index_delegate>(av_find_default_stream_index_ptr);
             return vectors.av_find_default_stream_index(@s);
         };
         
         vectors.av_find_input_format = (string @short_name) =>
         {
-            var av_find_input_format_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_find_input_format", ThrowErrorIfFunctionNotFound);
+            var av_find_input_format_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_find_input_format", ThrowErrorIfFunctionNotFound);
             vectors.av_find_input_format = av_find_input_format_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_find_input_format_delegate>(av_find_input_format_ptr);
             return vectors.av_find_input_format(@short_name);
         };
@@ -1183,7 +1183,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_find_program_from_stream = (AVFormatContext* @ic, AVProgram* @last, int @s) =>
         {
-            var av_find_program_from_stream_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_find_program_from_stream", ThrowErrorIfFunctionNotFound);
+            var av_find_program_from_stream_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_find_program_from_stream", ThrowErrorIfFunctionNotFound);
             vectors.av_find_program_from_stream = av_find_program_from_stream_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_find_program_from_stream_delegate>(av_find_program_from_stream_ptr);
             return vectors.av_find_program_from_stream(@ic, @last, @s);
         };
@@ -1428,14 +1428,14 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_get_audio_frame_duration = (AVCodecContext* @avctx, int @frame_bytes) =>
         {
-            var av_get_audio_frame_duration_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_get_audio_frame_duration", ThrowErrorIfFunctionNotFound);
+            var av_get_audio_frame_duration_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_get_audio_frame_duration", ThrowErrorIfFunctionNotFound);
             vectors.av_get_audio_frame_duration = av_get_audio_frame_duration_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_get_audio_frame_duration_delegate>(av_get_audio_frame_duration_ptr);
             return vectors.av_get_audio_frame_duration(@avctx, @frame_bytes);
         };
         
         vectors.av_get_audio_frame_duration2 = (AVCodecParameters* @par, int @frame_bytes) =>
         {
-            var av_get_audio_frame_duration2_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_get_audio_frame_duration2", ThrowErrorIfFunctionNotFound);
+            var av_get_audio_frame_duration2_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_get_audio_frame_duration2", ThrowErrorIfFunctionNotFound);
             vectors.av_get_audio_frame_duration2 = av_get_audio_frame_duration2_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_get_audio_frame_duration2_delegate>(av_get_audio_frame_duration2_ptr);
             return vectors.av_get_audio_frame_duration2(@par, @frame_bytes);
         };
@@ -1449,7 +1449,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_get_bits_per_sample = (AVCodecID @codec_id) =>
         {
-            var av_get_bits_per_sample_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_get_bits_per_sample", ThrowErrorIfFunctionNotFound);
+            var av_get_bits_per_sample_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_get_bits_per_sample", ThrowErrorIfFunctionNotFound);
             vectors.av_get_bits_per_sample = av_get_bits_per_sample_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_get_bits_per_sample_delegate>(av_get_bits_per_sample_ptr);
             return vectors.av_get_bits_per_sample(@codec_id);
         };
@@ -1470,21 +1470,21 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_get_exact_bits_per_sample = (AVCodecID @codec_id) =>
         {
-            var av_get_exact_bits_per_sample_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_get_exact_bits_per_sample", ThrowErrorIfFunctionNotFound);
+            var av_get_exact_bits_per_sample_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_get_exact_bits_per_sample", ThrowErrorIfFunctionNotFound);
             vectors.av_get_exact_bits_per_sample = av_get_exact_bits_per_sample_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_get_exact_bits_per_sample_delegate>(av_get_exact_bits_per_sample_ptr);
             return vectors.av_get_exact_bits_per_sample(@codec_id);
         };
         
         vectors.av_get_frame_filename = (byte* @buf, int @buf_size, string @path, int @number) =>
         {
-            var av_get_frame_filename_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_get_frame_filename", ThrowErrorIfFunctionNotFound);
+            var av_get_frame_filename_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_get_frame_filename", ThrowErrorIfFunctionNotFound);
             vectors.av_get_frame_filename = av_get_frame_filename_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_get_frame_filename_delegate>(av_get_frame_filename_ptr);
             return vectors.av_get_frame_filename(@buf, @buf_size, @path, @number);
         };
         
         vectors.av_get_frame_filename2 = (byte* @buf, int @buf_size, string @path, int @number, int @flags) =>
         {
-            var av_get_frame_filename2_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_get_frame_filename2", ThrowErrorIfFunctionNotFound);
+            var av_get_frame_filename2_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_get_frame_filename2", ThrowErrorIfFunctionNotFound);
             vectors.av_get_frame_filename2 = av_get_frame_filename2_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_get_frame_filename2_delegate>(av_get_frame_filename2_ptr);
             return vectors.av_get_frame_filename2(@buf, @buf_size, @path, @number, @flags);
         };
@@ -1498,7 +1498,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_get_output_timestamp = (AVFormatContext* @s, int @stream, long* @dts, long* @wall) =>
         {
-            var av_get_output_timestamp_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_get_output_timestamp", ThrowErrorIfFunctionNotFound);
+            var av_get_output_timestamp_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_get_output_timestamp", ThrowErrorIfFunctionNotFound);
             vectors.av_get_output_timestamp = av_get_output_timestamp_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_get_output_timestamp_delegate>(av_get_output_timestamp_ptr);
             return vectors.av_get_output_timestamp(@s, @stream, @dts, @wall);
         };
@@ -1512,7 +1512,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_get_packet = (AVIOContext* @s, AVPacket* @pkt, int @size) =>
         {
-            var av_get_packet_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_get_packet", ThrowErrorIfFunctionNotFound);
+            var av_get_packet_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_get_packet", ThrowErrorIfFunctionNotFound);
             vectors.av_get_packet = av_get_packet_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_get_packet_delegate>(av_get_packet_ptr);
             return vectors.av_get_packet(@s, @pkt, @size);
         };
@@ -1526,7 +1526,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_get_pcm_codec = (AVSampleFormat @fmt, int @be) =>
         {
-            var av_get_pcm_codec_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_get_pcm_codec", ThrowErrorIfFunctionNotFound);
+            var av_get_pcm_codec_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_get_pcm_codec", ThrowErrorIfFunctionNotFound);
             vectors.av_get_pcm_codec = av_get_pcm_codec_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_get_pcm_codec_delegate>(av_get_pcm_codec_ptr);
             return vectors.av_get_pcm_codec(@fmt, @be);
         };
@@ -1575,7 +1575,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_get_profile_name = (AVCodec* @codec, int @profile) =>
         {
-            var av_get_profile_name_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_get_profile_name", ThrowErrorIfFunctionNotFound);
+            var av_get_profile_name_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_get_profile_name", ThrowErrorIfFunctionNotFound);
             vectors.av_get_profile_name = av_get_profile_name_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_get_profile_name_delegate>(av_get_profile_name_ptr);
             return vectors.av_get_profile_name(@codec, @profile);
         };
@@ -1631,49 +1631,49 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_grow_packet = (AVPacket* @pkt, int @grow_by) =>
         {
-            var av_grow_packet_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_grow_packet", ThrowErrorIfFunctionNotFound);
+            var av_grow_packet_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_grow_packet", ThrowErrorIfFunctionNotFound);
             vectors.av_grow_packet = av_grow_packet_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_grow_packet_delegate>(av_grow_packet_ptr);
             return vectors.av_grow_packet(@pkt, @grow_by);
         };
         
         vectors.av_guess_codec = (AVOutputFormat* @fmt, string @short_name, string @filename, string @mime_type, AVMediaType @type) =>
         {
-            var av_guess_codec_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_guess_codec", ThrowErrorIfFunctionNotFound);
+            var av_guess_codec_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_guess_codec", ThrowErrorIfFunctionNotFound);
             vectors.av_guess_codec = av_guess_codec_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_guess_codec_delegate>(av_guess_codec_ptr);
             return vectors.av_guess_codec(@fmt, @short_name, @filename, @mime_type, @type);
         };
         
         vectors.av_guess_format = (string @short_name, string @filename, string @mime_type) =>
         {
-            var av_guess_format_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_guess_format", ThrowErrorIfFunctionNotFound);
+            var av_guess_format_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_guess_format", ThrowErrorIfFunctionNotFound);
             vectors.av_guess_format = av_guess_format_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_guess_format_delegate>(av_guess_format_ptr);
             return vectors.av_guess_format(@short_name, @filename, @mime_type);
         };
         
         vectors.av_guess_frame_rate = (AVFormatContext* @ctx, AVStream* @stream, AVFrame* @frame) =>
         {
-            var av_guess_frame_rate_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_guess_frame_rate", ThrowErrorIfFunctionNotFound);
+            var av_guess_frame_rate_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_guess_frame_rate", ThrowErrorIfFunctionNotFound);
             vectors.av_guess_frame_rate = av_guess_frame_rate_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_guess_frame_rate_delegate>(av_guess_frame_rate_ptr);
             return vectors.av_guess_frame_rate(@ctx, @stream, @frame);
         };
         
         vectors.av_guess_sample_aspect_ratio = (AVFormatContext* @format, AVStream* @stream, AVFrame* @frame) =>
         {
-            var av_guess_sample_aspect_ratio_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_guess_sample_aspect_ratio", ThrowErrorIfFunctionNotFound);
+            var av_guess_sample_aspect_ratio_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_guess_sample_aspect_ratio", ThrowErrorIfFunctionNotFound);
             vectors.av_guess_sample_aspect_ratio = av_guess_sample_aspect_ratio_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_guess_sample_aspect_ratio_delegate>(av_guess_sample_aspect_ratio_ptr);
             return vectors.av_guess_sample_aspect_ratio(@format, @stream, @frame);
         };
         
         vectors.av_hex_dump = (_iobuf* @f, byte* @buf, int @size) =>
         {
-            var av_hex_dump_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_hex_dump", ThrowErrorIfFunctionNotFound);
+            var av_hex_dump_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_hex_dump", ThrowErrorIfFunctionNotFound);
             vectors.av_hex_dump = av_hex_dump_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_hex_dump_delegate>(av_hex_dump_ptr);
             vectors.av_hex_dump(@f, @buf, @size);
         };
         
         vectors.av_hex_dump_log = (void* @avcl, int @level, byte* @buf, int @size) =>
         {
-            var av_hex_dump_log_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_hex_dump_log", ThrowErrorIfFunctionNotFound);
+            var av_hex_dump_log_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_hex_dump_log", ThrowErrorIfFunctionNotFound);
             vectors.av_hex_dump_log = av_hex_dump_log_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_hex_dump_log_delegate>(av_hex_dump_log_ptr);
             vectors.av_hex_dump_log(@avcl, @level, @buf, @size);
         };
@@ -1932,28 +1932,28 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_index_search_timestamp = (AVStream* @st, long @timestamp, int @flags) =>
         {
-            var av_index_search_timestamp_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_index_search_timestamp", ThrowErrorIfFunctionNotFound);
+            var av_index_search_timestamp_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_index_search_timestamp", ThrowErrorIfFunctionNotFound);
             vectors.av_index_search_timestamp = av_index_search_timestamp_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_index_search_timestamp_delegate>(av_index_search_timestamp_ptr);
             return vectors.av_index_search_timestamp(@st, @timestamp, @flags);
         };
         
         vectors.av_init_packet = (AVPacket* @pkt) =>
         {
-            var av_init_packet_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_init_packet", ThrowErrorIfFunctionNotFound);
+            var av_init_packet_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_init_packet", ThrowErrorIfFunctionNotFound);
             vectors.av_init_packet = av_init_packet_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_init_packet_delegate>(av_init_packet_ptr);
             vectors.av_init_packet(@pkt);
         };
         
         vectors.av_input_audio_device_next = (AVInputFormat* @d) =>
         {
-            var av_input_audio_device_next_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_input_audio_device_next", ThrowErrorIfFunctionNotFound);
+            var av_input_audio_device_next_ptr = FunctionResolver.GetFunctionPointer("avdevice", "av_input_audio_device_next", ThrowErrorIfFunctionNotFound);
             vectors.av_input_audio_device_next = av_input_audio_device_next_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_input_audio_device_next_delegate>(av_input_audio_device_next_ptr);
             return vectors.av_input_audio_device_next(@d);
         };
         
         vectors.av_input_video_device_next = (AVInputFormat* @d) =>
         {
-            var av_input_video_device_next_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_input_video_device_next", ThrowErrorIfFunctionNotFound);
+            var av_input_video_device_next_ptr = FunctionResolver.GetFunctionPointer("avdevice", "av_input_video_device_next", ThrowErrorIfFunctionNotFound);
             vectors.av_input_video_device_next = av_input_video_device_next_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_input_video_device_next_delegate>(av_input_video_device_next_ptr);
             return vectors.av_input_video_device_next(@d);
         };
@@ -1967,14 +1967,14 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_interleaved_write_frame = (AVFormatContext* @s, AVPacket* @pkt) =>
         {
-            var av_interleaved_write_frame_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_interleaved_write_frame", ThrowErrorIfFunctionNotFound);
+            var av_interleaved_write_frame_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_interleaved_write_frame", ThrowErrorIfFunctionNotFound);
             vectors.av_interleaved_write_frame = av_interleaved_write_frame_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_interleaved_write_frame_delegate>(av_interleaved_write_frame_ptr);
             return vectors.av_interleaved_write_frame(@s, @pkt);
         };
         
         vectors.av_interleaved_write_uncoded_frame = (AVFormatContext* @s, int @stream_index, AVFrame* @frame) =>
         {
-            var av_interleaved_write_uncoded_frame_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_interleaved_write_uncoded_frame", ThrowErrorIfFunctionNotFound);
+            var av_interleaved_write_uncoded_frame_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_interleaved_write_uncoded_frame", ThrowErrorIfFunctionNotFound);
             vectors.av_interleaved_write_uncoded_frame = av_interleaved_write_uncoded_frame_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_interleaved_write_uncoded_frame_delegate>(av_interleaved_write_uncoded_frame_ptr);
             return vectors.av_interleaved_write_uncoded_frame(@s, @stream_index, @frame);
         };
@@ -2107,7 +2107,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_match_ext = (string @filename, string @extensions) =>
         {
-            var av_match_ext_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_match_ext", ThrowErrorIfFunctionNotFound);
+            var av_match_ext_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_match_ext", ThrowErrorIfFunctionNotFound);
             vectors.av_match_ext = av_match_ext_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_match_ext_delegate>(av_match_ext_ptr);
             return vectors.av_match_ext(@filename, @extensions);
         };
@@ -2142,7 +2142,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_muxer_iterate = (void** @opaque) =>
         {
-            var av_muxer_iterate_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_muxer_iterate", ThrowErrorIfFunctionNotFound);
+            var av_muxer_iterate_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_muxer_iterate", ThrowErrorIfFunctionNotFound);
             vectors.av_muxer_iterate = av_muxer_iterate_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_muxer_iterate_delegate>(av_muxer_iterate_ptr);
             return vectors.av_muxer_iterate(@opaque);
         };
@@ -2156,14 +2156,14 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_new_packet = (AVPacket* @pkt, int @size) =>
         {
-            var av_new_packet_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_new_packet", ThrowErrorIfFunctionNotFound);
+            var av_new_packet_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_new_packet", ThrowErrorIfFunctionNotFound);
             vectors.av_new_packet = av_new_packet_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_new_packet_delegate>(av_new_packet_ptr);
             return vectors.av_new_packet(@pkt, @size);
         };
         
         vectors.av_new_program = (AVFormatContext* @s, int @id) =>
         {
-            var av_new_program_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_new_program", ThrowErrorIfFunctionNotFound);
+            var av_new_program_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_new_program", ThrowErrorIfFunctionNotFound);
             vectors.av_new_program = av_new_program_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_new_program_delegate>(av_new_program_ptr);
             return vectors.av_new_program(@s, @id);
         };
@@ -2541,14 +2541,14 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_output_audio_device_next = (AVOutputFormat* @d) =>
         {
-            var av_output_audio_device_next_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_output_audio_device_next", ThrowErrorIfFunctionNotFound);
+            var av_output_audio_device_next_ptr = FunctionResolver.GetFunctionPointer("avdevice", "av_output_audio_device_next", ThrowErrorIfFunctionNotFound);
             vectors.av_output_audio_device_next = av_output_audio_device_next_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_output_audio_device_next_delegate>(av_output_audio_device_next_ptr);
             return vectors.av_output_audio_device_next(@d);
         };
         
         vectors.av_output_video_device_next = (AVOutputFormat* @d) =>
         {
-            var av_output_video_device_next_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_output_video_device_next", ThrowErrorIfFunctionNotFound);
+            var av_output_video_device_next_ptr = FunctionResolver.GetFunctionPointer("avdevice", "av_output_video_device_next", ThrowErrorIfFunctionNotFound);
             vectors.av_output_video_device_next = av_output_video_device_next_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_output_video_device_next_delegate>(av_output_video_device_next_ptr);
             return vectors.av_output_video_device_next(@d);
         };
@@ -2800,56 +2800,56 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_pkt_dump_log2 = (void* @avcl, int @level, AVPacket* @pkt, int @dump_payload, AVStream* @st) =>
         {
-            var av_pkt_dump_log2_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_pkt_dump_log2", ThrowErrorIfFunctionNotFound);
+            var av_pkt_dump_log2_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_pkt_dump_log2", ThrowErrorIfFunctionNotFound);
             vectors.av_pkt_dump_log2 = av_pkt_dump_log2_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_pkt_dump_log2_delegate>(av_pkt_dump_log2_ptr);
             vectors.av_pkt_dump_log2(@avcl, @level, @pkt, @dump_payload, @st);
         };
         
         vectors.av_pkt_dump2 = (_iobuf* @f, AVPacket* @pkt, int @dump_payload, AVStream* @st) =>
         {
-            var av_pkt_dump2_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_pkt_dump2", ThrowErrorIfFunctionNotFound);
+            var av_pkt_dump2_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_pkt_dump2", ThrowErrorIfFunctionNotFound);
             vectors.av_pkt_dump2 = av_pkt_dump2_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_pkt_dump2_delegate>(av_pkt_dump2_ptr);
             vectors.av_pkt_dump2(@f, @pkt, @dump_payload, @st);
         };
         
         vectors.av_probe_input_buffer = (AVIOContext* @pb, AVInputFormat** @fmt, string @url, void* @logctx, uint @offset, uint @max_probe_size) =>
         {
-            var av_probe_input_buffer_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_probe_input_buffer", ThrowErrorIfFunctionNotFound);
+            var av_probe_input_buffer_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_probe_input_buffer", ThrowErrorIfFunctionNotFound);
             vectors.av_probe_input_buffer = av_probe_input_buffer_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_probe_input_buffer_delegate>(av_probe_input_buffer_ptr);
             return vectors.av_probe_input_buffer(@pb, @fmt, @url, @logctx, @offset, @max_probe_size);
         };
         
         vectors.av_probe_input_buffer2 = (AVIOContext* @pb, AVInputFormat** @fmt, string @url, void* @logctx, uint @offset, uint @max_probe_size) =>
         {
-            var av_probe_input_buffer2_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_probe_input_buffer2", ThrowErrorIfFunctionNotFound);
+            var av_probe_input_buffer2_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_probe_input_buffer2", ThrowErrorIfFunctionNotFound);
             vectors.av_probe_input_buffer2 = av_probe_input_buffer2_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_probe_input_buffer2_delegate>(av_probe_input_buffer2_ptr);
             return vectors.av_probe_input_buffer2(@pb, @fmt, @url, @logctx, @offset, @max_probe_size);
         };
         
         vectors.av_probe_input_format = (AVProbeData* @pd, int @is_opened) =>
         {
-            var av_probe_input_format_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_probe_input_format", ThrowErrorIfFunctionNotFound);
+            var av_probe_input_format_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_probe_input_format", ThrowErrorIfFunctionNotFound);
             vectors.av_probe_input_format = av_probe_input_format_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_probe_input_format_delegate>(av_probe_input_format_ptr);
             return vectors.av_probe_input_format(@pd, @is_opened);
         };
         
         vectors.av_probe_input_format2 = (AVProbeData* @pd, int @is_opened, int* @score_max) =>
         {
-            var av_probe_input_format2_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_probe_input_format2", ThrowErrorIfFunctionNotFound);
+            var av_probe_input_format2_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_probe_input_format2", ThrowErrorIfFunctionNotFound);
             vectors.av_probe_input_format2 = av_probe_input_format2_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_probe_input_format2_delegate>(av_probe_input_format2_ptr);
             return vectors.av_probe_input_format2(@pd, @is_opened, @score_max);
         };
         
         vectors.av_probe_input_format3 = (AVProbeData* @pd, int @is_opened, int* @score_ret) =>
         {
-            var av_probe_input_format3_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_probe_input_format3", ThrowErrorIfFunctionNotFound);
+            var av_probe_input_format3_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_probe_input_format3", ThrowErrorIfFunctionNotFound);
             vectors.av_probe_input_format3 = av_probe_input_format3_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_probe_input_format3_delegate>(av_probe_input_format3_ptr);
             return vectors.av_probe_input_format3(@pd, @is_opened, @score_ret);
         };
         
         vectors.av_program_add_stream_index = (AVFormatContext* @ac, int @progid, uint @idx) =>
         {
-            var av_program_add_stream_index_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_program_add_stream_index", ThrowErrorIfFunctionNotFound);
+            var av_program_add_stream_index_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_program_add_stream_index", ThrowErrorIfFunctionNotFound);
             vectors.av_program_add_stream_index = av_program_add_stream_index_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_program_add_stream_index_delegate>(av_program_add_stream_index_ptr);
             vectors.av_program_add_stream_index(@ac, @progid, @idx);
         };
@@ -2870,14 +2870,14 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_read_image_line = (ushort* @dst, in byte_ptrArray4 @data, in int_array4 @linesize, AVPixFmtDescriptor* @desc, int @x, int @y, int @c, int @w, int @read_pal_component) =>
         {
-            var av_read_image_line_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_read_image_line", ThrowErrorIfFunctionNotFound);
+            var av_read_image_line_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_read_image_line", ThrowErrorIfFunctionNotFound);
             vectors.av_read_image_line = av_read_image_line_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_read_image_line_delegate>(av_read_image_line_ptr);
             vectors.av_read_image_line(@dst, @data, @linesize, @desc, @x, @y, @c, @w, @read_pal_component);
         };
         
         vectors.av_read_image_line2 = (void* @dst, in byte_ptrArray4 @data, in int_array4 @linesize, AVPixFmtDescriptor* @desc, int @x, int @y, int @c, int @w, int @read_pal_component, int @dst_element_size) =>
         {
-            var av_read_image_line2_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_read_image_line2", ThrowErrorIfFunctionNotFound);
+            var av_read_image_line2_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_read_image_line2", ThrowErrorIfFunctionNotFound);
             vectors.av_read_image_line2 = av_read_image_line2_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_read_image_line2_delegate>(av_read_image_line2_ptr);
             vectors.av_read_image_line2(@dst, @data, @linesize, @desc, @x, @y, @c, @w, @read_pal_component, @dst_element_size);
         };
@@ -3024,14 +3024,14 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_sdp_create = (AVFormatContext** @ac, int @n_files, byte* @buf, int @size) =>
         {
-            var av_sdp_create_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_sdp_create", ThrowErrorIfFunctionNotFound);
+            var av_sdp_create_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_sdp_create", ThrowErrorIfFunctionNotFound);
             vectors.av_sdp_create = av_sdp_create_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_sdp_create_delegate>(av_sdp_create_ptr);
             return vectors.av_sdp_create(@ac, @n_files, @buf, @size);
         };
         
         vectors.av_seek_frame = (AVFormatContext* @s, int @stream_index, long @timestamp, int @flags) =>
         {
-            var av_seek_frame_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_seek_frame", ThrowErrorIfFunctionNotFound);
+            var av_seek_frame_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_seek_frame", ThrowErrorIfFunctionNotFound);
             vectors.av_seek_frame = av_seek_frame_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_seek_frame_delegate>(av_seek_frame_ptr);
             return vectors.av_seek_frame(@s, @stream_index, @timestamp, @flags);
         };
@@ -3045,7 +3045,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_shrink_packet = (AVPacket* @pkt, int @size) =>
         {
-            var av_shrink_packet_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_shrink_packet", ThrowErrorIfFunctionNotFound);
+            var av_shrink_packet_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_shrink_packet", ThrowErrorIfFunctionNotFound);
             vectors.av_shrink_packet = av_shrink_packet_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_shrink_packet_delegate>(av_shrink_packet_ptr);
             vectors.av_shrink_packet(@pkt, @size);
         };
@@ -3066,28 +3066,28 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_stream_get_class = () =>
         {
-            var av_stream_get_class_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_stream_get_class", ThrowErrorIfFunctionNotFound);
+            var av_stream_get_class_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_stream_get_class", ThrowErrorIfFunctionNotFound);
             vectors.av_stream_get_class = av_stream_get_class_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_stream_get_class_delegate>(av_stream_get_class_ptr);
             return vectors.av_stream_get_class();
         };
         
         vectors.av_stream_get_codec_timebase = (AVStream* @st) =>
         {
-            var av_stream_get_codec_timebase_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_stream_get_codec_timebase", ThrowErrorIfFunctionNotFound);
+            var av_stream_get_codec_timebase_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_stream_get_codec_timebase", ThrowErrorIfFunctionNotFound);
             vectors.av_stream_get_codec_timebase = av_stream_get_codec_timebase_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_stream_get_codec_timebase_delegate>(av_stream_get_codec_timebase_ptr);
             return vectors.av_stream_get_codec_timebase(@st);
         };
         
         vectors.av_stream_get_parser = (AVStream* @s) =>
         {
-            var av_stream_get_parser_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_stream_get_parser", ThrowErrorIfFunctionNotFound);
+            var av_stream_get_parser_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_stream_get_parser", ThrowErrorIfFunctionNotFound);
             vectors.av_stream_get_parser = av_stream_get_parser_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_stream_get_parser_delegate>(av_stream_get_parser_ptr);
             return vectors.av_stream_get_parser(@s);
         };
         
         vectors.av_stream_group_get_class = () =>
         {
-            var av_stream_group_get_class_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_stream_group_get_class", ThrowErrorIfFunctionNotFound);
+            var av_stream_group_get_class_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_stream_group_get_class", ThrowErrorIfFunctionNotFound);
             vectors.av_stream_group_get_class = av_stream_group_get_class_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_stream_group_get_class_delegate>(av_stream_group_get_class_ptr);
             return vectors.av_stream_group_get_class();
         };
@@ -3227,7 +3227,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_url_split = (byte* @proto, int @proto_size, byte* @authorization, int @authorization_size, byte* @hostname, int @hostname_size, int* @port_ptr, byte* @path, int @path_size, string @url) =>
         {
-            var av_url_split_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_url_split", ThrowErrorIfFunctionNotFound);
+            var av_url_split_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_url_split", ThrowErrorIfFunctionNotFound);
             vectors.av_url_split = av_url_split_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_url_split_delegate>(av_url_split_ptr);
             vectors.av_url_split(@proto, @proto_size, @authorization, @authorization_size, @hostname, @hostname_size, @port_ptr, @path, @path_size, @url);
         };
@@ -3262,14 +3262,14 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_write_image_line = (ushort* @src, ref byte_ptrArray4 @data, in int_array4 @linesize, AVPixFmtDescriptor* @desc, int @x, int @y, int @c, int @w) =>
         {
-            var av_write_image_line_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_write_image_line", ThrowErrorIfFunctionNotFound);
+            var av_write_image_line_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_write_image_line", ThrowErrorIfFunctionNotFound);
             vectors.av_write_image_line = av_write_image_line_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_write_image_line_delegate>(av_write_image_line_ptr);
             vectors.av_write_image_line(@src, ref @data, @linesize, @desc, @x, @y, @c, @w);
         };
         
         vectors.av_write_image_line2 = (void* @src, ref byte_ptrArray4 @data, in int_array4 @linesize, AVPixFmtDescriptor* @desc, int @x, int @y, int @c, int @w, int @src_element_size) =>
         {
-            var av_write_image_line2_ptr = FunctionResolver.GetFunctionPointer("avformat", "av_write_image_line2", ThrowErrorIfFunctionNotFound);
+            var av_write_image_line2_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_write_image_line2", ThrowErrorIfFunctionNotFound);
             vectors.av_write_image_line2 = av_write_image_line2_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_write_image_line2_delegate>(av_write_image_line2_ptr);
             vectors.av_write_image_line2(@src, ref @data, @linesize, @desc, @x, @y, @c, @w, @src_element_size);
         };
@@ -3297,7 +3297,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.av_xiphlacing = (byte* @s, uint @v) =>
         {
-            var av_xiphlacing_ptr = FunctionResolver.GetFunctionPointer("avutil", "av_xiphlacing", ThrowErrorIfFunctionNotFound);
+            var av_xiphlacing_ptr = FunctionResolver.GetFunctionPointer("avcodec", "av_xiphlacing", ThrowErrorIfFunctionNotFound);
             vectors.av_xiphlacing = av_xiphlacing_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.av_xiphlacing_delegate>(av_xiphlacing_ptr);
             return vectors.av_xiphlacing(@s, @v);
         };
@@ -4578,7 +4578,7 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.avsubtitle_free = (AVSubtitle* @sub) =>
         {
-            var avsubtitle_free_ptr = FunctionResolver.GetFunctionPointer("avutil", "avsubtitle_free", ThrowErrorIfFunctionNotFound);
+            var avsubtitle_free_ptr = FunctionResolver.GetFunctionPointer("avcodec", "avsubtitle_free", ThrowErrorIfFunctionNotFound);
             vectors.avsubtitle_free = avsubtitle_free_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.avsubtitle_free_delegate>(avsubtitle_free_ptr);
             vectors.avsubtitle_free(@sub);
         };
@@ -4739,21 +4739,21 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.swresample_configuration = () =>
         {
-            var swresample_configuration_ptr = FunctionResolver.GetFunctionPointer("avutil", "swresample_configuration", ThrowErrorIfFunctionNotFound);
+            var swresample_configuration_ptr = FunctionResolver.GetFunctionPointer("swresample", "swresample_configuration", ThrowErrorIfFunctionNotFound);
             vectors.swresample_configuration = swresample_configuration_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.swresample_configuration_delegate>(swresample_configuration_ptr);
             return vectors.swresample_configuration();
         };
         
         vectors.swresample_license = () =>
         {
-            var swresample_license_ptr = FunctionResolver.GetFunctionPointer("avutil", "swresample_license", ThrowErrorIfFunctionNotFound);
+            var swresample_license_ptr = FunctionResolver.GetFunctionPointer("swresample", "swresample_license", ThrowErrorIfFunctionNotFound);
             vectors.swresample_license = swresample_license_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.swresample_license_delegate>(swresample_license_ptr);
             return vectors.swresample_license();
         };
         
         vectors.swresample_version = () =>
         {
-            var swresample_version_ptr = FunctionResolver.GetFunctionPointer("avutil", "swresample_version", ThrowErrorIfFunctionNotFound);
+            var swresample_version_ptr = FunctionResolver.GetFunctionPointer("swresample", "swresample_version", ThrowErrorIfFunctionNotFound);
             vectors.swresample_version = swresample_version_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.swresample_version_delegate>(swresample_version_ptr);
             return vectors.swresample_version();
         };
@@ -5012,21 +5012,21 @@ public static unsafe partial class DynamicallyLoadedBindings
         
         vectors.swscale_configuration = () =>
         {
-            var swscale_configuration_ptr = FunctionResolver.GetFunctionPointer("avutil", "swscale_configuration", ThrowErrorIfFunctionNotFound);
+            var swscale_configuration_ptr = FunctionResolver.GetFunctionPointer("swscale", "swscale_configuration", ThrowErrorIfFunctionNotFound);
             vectors.swscale_configuration = swscale_configuration_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.swscale_configuration_delegate>(swscale_configuration_ptr);
             return vectors.swscale_configuration();
         };
         
         vectors.swscale_license = () =>
         {
-            var swscale_license_ptr = FunctionResolver.GetFunctionPointer("avutil", "swscale_license", ThrowErrorIfFunctionNotFound);
+            var swscale_license_ptr = FunctionResolver.GetFunctionPointer("swscale", "swscale_license", ThrowErrorIfFunctionNotFound);
             vectors.swscale_license = swscale_license_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.swscale_license_delegate>(swscale_license_ptr);
             return vectors.swscale_license();
         };
         
         vectors.swscale_version = () =>
         {
-            var swscale_version_ptr = FunctionResolver.GetFunctionPointer("avutil", "swscale_version", ThrowErrorIfFunctionNotFound);
+            var swscale_version_ptr = FunctionResolver.GetFunctionPointer("swscale", "swscale_version", ThrowErrorIfFunctionNotFound);
             vectors.swscale_version = swscale_version_ptr == IntPtr.Zero ? delegate { throw new NotSupportedException(); } : Marshal.GetDelegateForFunctionPointer<vectors.swscale_version_delegate>(swscale_version_ptr);
             return vectors.swscale_version();
         };

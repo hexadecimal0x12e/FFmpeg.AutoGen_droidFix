@@ -80,6 +80,18 @@ internal class FunctionProcessor
                 }
             }
 
+            var preferredLibraryFromHeader = InferLibraryFromTranslationUnitPath(translationUnit.FileName);
+            if (!string.IsNullOrEmpty(preferredLibraryFromHeader) &&
+                !string.Equals(export.LibraryName, preferredLibraryFromHeader, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(export.LibraryName, "avutil", StringComparison.OrdinalIgnoreCase))
+            {
+                export = export with
+                {
+                    LibraryName = preferredLibraryFromHeader,
+                    LibraryVersion = ResolveLibraryVersion(preferredLibraryFromHeader, export.LibraryVersion)
+                };
+            }
+
             var exportDefinition = new ExportFunctionDefinition
             {
                 LibraryName = export.LibraryName,
@@ -119,6 +131,39 @@ internal class FunctionProcessor
         if (normalizedPath.Contains("/libavdevice/")) return "avdevice";
 
         return "avutil";
+    }
+
+    private static string InferLibraryFromTranslationUnitPath(string translationUnitFileName)
+    {
+        translationUnitFileName ??= string.Empty;
+
+        var normalizedPath = translationUnitFileName
+            .Replace('\\', '/')
+            .ToLowerInvariant();
+
+        if (normalizedPath.Contains("/libswresample/")) return "swresample";
+        if (normalizedPath.Contains("/libpostproc/")) return "postproc";
+        if (normalizedPath.Contains("/libswscale/")) return "swscale";
+        if (normalizedPath.Contains("/libavcodec/")) return "avcodec";
+        if (normalizedPath.Contains("/libavformat/")) return "avformat";
+        if (normalizedPath.Contains("/libavfilter/")) return "avfilter";
+        if (normalizedPath.Contains("/libavdevice/")) return "avdevice";
+        if (normalizedPath.Contains("/libavutil/")) return "avutil";
+
+        return null;
+    }
+
+    private int ResolveLibraryVersion(string libraryName, int fallbackVersion)
+    {
+        if (string.IsNullOrWhiteSpace(libraryName)) return fallbackVersion;
+
+        var matchingVersion = _context.FunctionExportMap.Values
+            .Where(x => string.Equals(x.LibraryName, libraryName, StringComparison.OrdinalIgnoreCase))
+            .Select(x => x.LibraryVersion)
+            .DefaultIfEmpty(fallbackVersion)
+            .Max();
+
+        return matchingVersion;
     }
 
     internal TypeDefinition GetDelegateType(FunctionType functionType, string name)
