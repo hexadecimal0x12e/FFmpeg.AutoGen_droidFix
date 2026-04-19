@@ -30,10 +30,16 @@ namespace FFmpeg.AutoGen.Example.MAUIAppExample
 #if ANDROID
             var nativeLibDir = Android.App.Application.Context.ApplicationInfo.NativeLibraryDir;
             Debug.WriteLine($"Native library dir: {nativeLibDir}");
-            ffmpeg.RootPath = nativeLibDir;
+            DynamicallyLoadedBindings.FunctionResolver = new FFmpeg.AutoGen.Native.LinuxFunctionResolver(); 
+            //try
+            //{
+            //    ffmpeg.RootPath = nativeLibDir;
+            //}
+            //catch { }
             JavaSystem.LoadLibrary("c");
+            ffmpeg.RootPath = nativeLibDir;
             FFmpeg.AutoGen.DynamicallyLoadedBindings.ThrowErrorIfFunctionNotFound = true;
-            FFmpeg.AutoGen.DynamicallyLoadedBindings.Initialize();
+            DynamicallyLoadedBindings.Initialize();
 #elif WINDOWS
             var current = Environment.CurrentDirectory;
             var probe = Path.Combine("FFmpeg", "bin", Environment.Is64BitProcess ? "x64" : "x86");

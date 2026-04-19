@@ -18,6 +18,25 @@ namespace FFmpeg.AutoGen.ClangMacroParser
             Token Read() => tokens[i++];
             Token Current() => tokens[i];
 
+            string TokenDebug(Token token) =>
+                $"{token.TokenType}('{token.Value}')@{token.StartPosition}";
+
+            string ContextWindow()
+            {
+                var start = Math.Max(0, i - 2);
+                var end = Math.Min(tokens.Length - 1, i + 2);
+                return string.Join(" ", Enumerable.Range(start, end - start + 1)
+                    .Select(index => index == i ? $"[{TokenDebug(tokens[index])}]" : TokenDebug(tokens[index])));
+            }
+
+            NotSupportedException Unsupported(string stage)
+            {
+                var current = CanRead() ? TokenDebug(Current()) : "<EOF>";
+                var context = tokens.Length == 0 ? "<EMPTY>" : ContextWindow();
+                return new NotSupportedException(
+                    $"Unsupported syntax in {stage}. index={i}, current={current}, context={context}, expression='{expression}'");
+            }
+
             bool IsSequenceOf(params Func<Token, bool>[] tests) =>
                 i + tests.Length < tokens.Length
                 && tests.Select((test, index) => new { test, token = tokens[i + index] }).All(x => x.test(x.token));
@@ -37,7 +56,7 @@ namespace FFmpeg.AutoGen.ClangMacroParser
                     case TokenType.String:
                         return new ConstantExpression(value);
                     default:
-                        throw new NotSupportedException();
+                        throw Unsupported("Constant");
                 }
             }
 
@@ -85,7 +104,7 @@ namespace FFmpeg.AutoGen.ClangMacroParser
                 if (Current().IsPunctuator("(")) return InParentheses(Expression);
                 if (Current().IsConstant() || Current().IsString()) return Constant();
                 if (Current().IsIdentifier()) return Variable();
-                throw new NotSupportedException();
+                throw Unsupported("Atomic");
             }
 
             bool IsCast() => IsSequenceOf(x => x.IsPunctuator("("), x => x.IsKeyword() || x.IsIdentifier(), x => x.IsPunctuator(")"));
@@ -102,7 +121,7 @@ namespace FFmpeg.AutoGen.ClangMacroParser
                     return Atomic();
                 }
 
-                throw new NotSupportedException();
+                throw Unsupported("NoneAtomic");
             }
 
             IExpression MaybeBinary(IExpression left, int precedence = int.MaxValue)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using FFmpeg.AutoGen.Abstractions;
+using FFmpeg.AutoGen;
 
 namespace FFmpeg.AutoGen.Example;
 
@@ -30,8 +30,8 @@ public sealed unsafe class VideoConverter : IDisposable
             destinationSize.Height,
             1);
         var convertedFrameBufferPtr = Marshal.AllocHGlobal(convertedFrameBufferSize);
-        var dstData = new byte_ptr4();
-        var dstLinesize = new int4();
+        var dstData = new byte_ptrArray4();
+        var dstLinesize = new int_array4();
 
         ffmpeg.av_image_fill_arrays(ref dstData,
             ref dstLinesize,
@@ -48,8 +48,8 @@ public sealed unsafe class VideoConverter : IDisposable
 
     public AVFrame Convert(AVFrame sourceFrame)
     {
-        var dstData = new byte_ptr4();
-        var dstLinesize = new int4();
+        var dstData = new byte_ptrArray4();
+        var dstLinesize = new int_array4();
 
         ffmpeg.sws_scale(_pConvertContext,
             sourceFrame.data,

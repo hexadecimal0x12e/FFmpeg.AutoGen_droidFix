@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <PackageId>$(AssemblyName)</PackageId>
-    <Version>8.1.0.0</Version>
+    <Version>8.1.0.1</Version>
     <Authors>hexadecimal0x12e</Authors>
     <Company>hexadecimal0x12e</Company>
 		<Copyright>Copyright © hexadecimal0x12e 2025-2026 All rights reserved.</Copyright>

@@ -80,6 +80,8 @@ public unsafe partial struct AVBufferSrcParameters
     public AVColorRange @color_range;
     public AVFrameSideData** @side_data;
     public int @nb_side_data;
+    /// <summary>Video only, the alpha mode.</summary>
+    public AVAlphaMode @alpha_mode;
 }
 
 /// <summary>An AVChannelCustom defines a single channel within a custom order layout</summary>
@@ -308,6 +310,7 @@ public unsafe partial struct AVCodecContext
     /// <summary>custom intra quantization matrix - encoding: Set by user, can be NULL. - decoding: unused.</summary>
     public ushort* @chroma_intra_matrix;
     /// <summary>precision of the intra DC coefficient - 8 - encoding: Set by user. - decoding: Set by libavcodec</summary>
+    [Obsolete("Use the MPEG-2 encoder's private option \"intra_dc_precision\" instead.")]
     public int @intra_dc_precision;
     /// <summary>minimum MB Lagrange multiplier - encoding: Set by user. - decoding: unused</summary>
     public int @mb_lmin;
@@ -483,6 +486,8 @@ public unsafe partial struct AVCodecContext
     /// <summary>Array containing static side data, such as HDR10 CLL / MDCV structures. Side data entries should be allocated by usage of helpers defined in libavutil/frame.h.</summary>
     public AVFrameSideData** @decoded_side_data;
     public int @nb_decoded_side_data;
+    /// <summary>Indicates how the alpha channel of the video is represented. - encoding: Set by user - decoding: Set by libavcodec</summary>
+    public AVAlphaMode @alpha_mode;
 }
 
 /// <summary>This struct describes the properties of a single codec described by an AVCodecID.</summary>
@@ -571,11 +576,14 @@ public unsafe partial struct AVCodecParameters
     public int @trailing_padding;
     /// <summary>Audio only. Number of samples to skip after a discontinuity.</summary>
     public int @seek_preroll;
+    /// <summary>Video with alpha channel only. Alpha channel handling</summary>
+    public AVAlphaMode @alpha_mode;
 }
 
 public unsafe partial struct AVCodecParser
 {
     public int7 @codec_ids;
+    /// <summary>*************************************************************** All fields below this line are not part of the public API. They may not be used outside of libavcodec and can be changed and removed at will. New public fields should be added right above. ****************************************************************</summary>
     public int @priv_data_size;
     public AVCodecParser_parser_init_func @parser_init;
     public AVCodecParser_parser_parse_func @parser_parse;
@@ -720,6 +728,10 @@ public unsafe partial struct AVD3D11VADeviceContext
     public AVD3D11VADeviceContext_lock_func @lock;
     public AVD3D11VADeviceContext_unlock_func @unlock;
     public void* @lock_ctx;
+    /// <summary>D3D11_TEXTURE2D_DESC.BindFlags to be applied to D3D11 resources allocated for frames using this device context.</summary>
+    public uint @BindFlags;
+    /// <summary>D3D11_TEXTURE2D_DESC.MiscFlags to be applied to D3D11 resources allocated for frames using this device context.</summary>
+    public uint @MiscFlags;
 }
 
 /// <summary>This struct is allocated as AVHWFramesContext.hwctx</summary>
@@ -911,6 +923,8 @@ public unsafe partial struct AVFilterFormatsConfig
     public AVFilterFormats* @color_spaces;
     /// <summary>AVColorRange</summary>
     public AVFilterFormats* @color_ranges;
+    /// <summary>AVAlphaMode</summary>
+    public AVFilterFormats* @alpha_modes;
 }
 
 public unsafe partial struct AVFilterGraph
@@ -992,6 +1006,8 @@ public unsafe partial struct AVFilterLink
     public AVRational @time_base;
     public AVFrameSideData** @side_data;
     public int @nb_side_data;
+    /// <summary>alpha mode (for videos with an alpha channel)</summary>
+    public AVAlphaMode @alpha_mode;
     /// <summary>Lists of supported formats / etc. supported by the input filter.</summary>
     public AVFilterFormatsConfig @incfg;
     /// <summary>Lists of supported formats / etc. supported by the output filter.</summary>
@@ -1166,6 +1182,8 @@ public unsafe partial struct AVFormatContext
     public AVFormatContext_io_close2_func @io_close2;
     /// <summary>Maximum number of bytes read from input in order to determine stream durations when using estimate_timings_from_pts in avformat_find_stream_info(). Demuxing only, set by the caller before avformat_find_stream_info(). Can be set to 0 to let avformat choose using a heuristic.</summary>
     public long @duration_probesize;
+    /// <summary>Name of this format context, only used for logging purposes.</summary>
+    public byte* @name;
 }
 
 /// <summary>This structure describes decoded (raw) audio or video data.</summary>
@@ -1230,7 +1248,7 @@ public unsafe partial struct AVFrame
     public AVBufferRef* @hw_frames_ctx;
     /// <summary>Frame owner&apos;s private data.</summary>
     public AVBufferRef* @opaque_ref;
-    /// <summary>cropping Video frames only. The number of pixels to discard from the the top/bottom/left/right border of the frame to obtain the sub-rectangle of the frame intended for presentation. @{</summary>
+    /// <summary>cropping Video frames only. The number of pixels to discard from the top/bottom/left/right border of the frame to obtain the sub-rectangle of the frame intended for presentation. @{</summary>
     public ulong @crop_top;
     public ulong @crop_bottom;
     public ulong @crop_left;
@@ -1241,6 +1259,8 @@ public unsafe partial struct AVFrame
     public AVChannelLayout @ch_layout;
     /// <summary>Duration of the frame, in the same units as pts. 0 if unknown.</summary>
     public long @duration;
+    /// <summary>Indicates how the alpha channel of the video is to be handled. - encoding: Set by user - decoding: Set by libavcodec</summary>
+    public AVAlphaMode @alpha_mode;
 }
 
 /// <summary>Structure to hold side data for an AVFrame.</summary>
@@ -1780,6 +1800,28 @@ public unsafe partial struct AVRTCPSenderReport
     public uint @sender_nb_packets;
     /// <summary>Total number of bytes sent (excluding headers or padding)</summary>
     public uint @sender_nb_bytes;
+}
+
+public unsafe partial struct AVRTSPCommandRequest
+{
+    /// <summary>Headers sent in the request to the server</summary>
+    public AVDictionary* @headers;
+    /// <summary>Body payload size</summary>
+    public ulong @body_len;
+    /// <summary>Body payload</summary>
+    public byte* @body;
+}
+
+public unsafe partial struct AVRTSPResponse
+{
+    /// <summary>Response status code from server</summary>
+    public int @status_code;
+    /// <summary>Reason phrase from the server, describing the status in a human-readable way.</summary>
+    public byte* @reason;
+    /// <summary>Body payload size</summary>
+    public ulong @body_len;
+    /// <summary>Body payload</summary>
+    public byte* @body;
 }
 
 /// <summary>This struct describes the properties of a side data type. Its instance corresponding to a given type can be obtained from av_frame_side_data_desc().</summary>

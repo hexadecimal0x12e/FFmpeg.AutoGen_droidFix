@@ -83,6 +83,7 @@ internal class Program
         GenerateStaticallyLinkedBindings(generationContext);
         GenerateDynamicallyLinkedBindings(generationContext);
         GenerateDynamicallyLoadedBindings(generationContext);
+        GenerateDynamicallyLoadedBindingMap(generationContext, functionExports);
     }
 
     private static IEnumerable<ASTContext> Parse(string includesDir)
@@ -208,5 +209,15 @@ internal class Program
 
         LibrariesGenerator.Generate("DynamicallyLoadedBindings.libraries.g.cs", context);
         FunctionsGenerator.GenerateDynamicallyLoaded("DynamicallyLoadedBindings.g.cs", context);
+    }
+
+    private static void GenerateDynamicallyLoadedBindingMap(GenerationContext baseContext, IEnumerable<FunctionExport> functionExports)
+    {
+        var context = baseContext with
+        {
+            OutputDir = Path.Combine(baseContext.SolutionDir, @"FFmpeg.AutoGen\generated")
+        };
+
+        FunctionBindingMapGenerator.Generate("DynamicallyLoadedBindingMap.g.cs", context, functionExports);
     }
 }

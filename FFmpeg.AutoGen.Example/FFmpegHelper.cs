@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using FFmpeg.AutoGen.Abstractions;
+using FFmpeg.AutoGen;
 
 namespace FFmpeg.AutoGen.Example;
 

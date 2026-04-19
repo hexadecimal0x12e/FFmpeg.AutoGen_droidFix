@@ -11,6 +11,19 @@ public enum AVActiveFormatDescription : int
     @AV_AFD_SP_4_3 = 15,
 }
 
+/// <summary>Correlation between the alpha channel and color values.</summary>
+public enum AVAlphaMode : int
+{
+    /// <summary>Unknown alpha handling, or no alpha channel</summary>
+    @AVALPHA_MODE_UNSPECIFIED = 0,
+    /// <summary>Alpha channel is multiplied into color values</summary>
+    @AVALPHA_MODE_PREMULTIPLIED = 1,
+    /// <summary>Alpha channel is independent of color values</summary>
+    @AVALPHA_MODE_STRAIGHT = 2,
+    /// <summary>Not part of ABI</summary>
+    @AVALPHA_MODE_NB = 3,
+}
+
 /// <summary>Message types used by avdevice_app_to_dev_control_message().</summary>
 public enum AVAppToDevMessageType : int
 {
@@ -217,6 +230,8 @@ public enum AVCodecConfig : int
     @AV_CODEC_CONFIG_COLOR_RANGE = 5,
     /// <summary>AVColorSpace, terminated by AVCOL_SPC_UNSPECIFIED</summary>
     @AV_CODEC_CONFIG_COLOR_SPACE = 6,
+    /// <summary>AVAlphaMode, terminated by AVALPHA_MODE_UNSPECIFIED</summary>
+    @AV_CODEC_CONFIG_ALPHA_MODE = 7,
 }
 
 /// <summary>Identify the syntax and semantics of the bitstream. The principle is roughly: Two decoders with the same ID can decode the same streams. Two encoders with the same ID can encode compatible streams. There may be slight deviations from the principle due to implementation details.</summary>
@@ -498,6 +513,7 @@ public enum AVCodecID : int
     @AV_CODEC_ID_JPEGXL_ANIM = 272,
     @AV_CODEC_ID_APV = 273,
     @AV_CODEC_ID_PRORES_RAW = 274,
+    @AV_CODEC_ID_JPEGXS = 275,
     /// <summary>A dummy id pointing at the start of audio codecs</summary>
     @AV_CODEC_ID_FIRST_AUDIO = 65536,
     @AV_CODEC_ID_PCM_S16LE = 65536,
@@ -591,6 +607,14 @@ public enum AVCodecID : int
     @AV_CODEC_ID_ADPCM_XMD = 69683,
     @AV_CODEC_ID_ADPCM_IMA_XBOX = 69684,
     @AV_CODEC_ID_ADPCM_SANYO = 69685,
+    @AV_CODEC_ID_ADPCM_IMA_HVQM4 = 69686,
+    @AV_CODEC_ID_ADPCM_IMA_PDA = 69687,
+    @AV_CODEC_ID_ADPCM_N64 = 69688,
+    @AV_CODEC_ID_ADPCM_IMA_HVQM2 = 69689,
+    @AV_CODEC_ID_ADPCM_IMA_MAGIX = 69690,
+    @AV_CODEC_ID_ADPCM_PSXC = 69691,
+    @AV_CODEC_ID_ADPCM_CIRCUS = 69692,
+    @AV_CODEC_ID_ADPCM_IMA_ESCAPE = 69693,
     @AV_CODEC_ID_AMR_NB = 73728,
     @AV_CODEC_ID_AMR_WB = 73729,
     @AV_CODEC_ID_RA_144 = 77824,
@@ -714,6 +738,7 @@ public enum AVCodecID : int
     @AV_CODEC_ID_QOA = 86121,
     @AV_CODEC_ID_LC3 = 86122,
     @AV_CODEC_ID_G728 = 86123,
+    @AV_CODEC_ID_AHX = 86124,
     /// <summary>A dummy ID pointing at the start of subtitle codecs.</summary>
     @AV_CODEC_ID_FIRST_SUBTITLE = 94208,
     @AV_CODEC_ID_DVD_SUBTITLE = 94208,
@@ -809,6 +834,10 @@ public enum AVColorPrimaries : int
     @AVCOL_PRI_JEDEC_P22 = 22,
     /// <summary>Not part of ABI</summary>
     @AVCOL_PRI_NB = 23,
+    @AVCOL_PRI_EXT_BASE = 256,
+    @AVCOL_PRI_V_GAMUT = 256,
+    /// <summary>Not part of ABI</summary>
+    @AVCOL_PRI_EXT_NB = 257,
 }
 
 /// <summary>Visual content value range.</summary>
@@ -907,6 +936,10 @@ public enum AVColorTransferCharacteristic : int
     @AVCOL_TRC_ARIB_STD_B67 = 18,
     /// <summary>Not part of ABI</summary>
     @AVCOL_TRC_NB = 19,
+    @AVCOL_TRC_EXT_BASE = 256,
+    @AVCOL_TRC_V_LOG = 256,
+    /// <summary>Not part of ABI</summary>
+    @AVCOL_TRC_EXT_NB = 257,
 }
 
 /// <summary>Message types used by avdevice_dev_to_app_control_message().</summary>
@@ -979,6 +1012,13 @@ public enum AVFieldOrder : int
     @AV_FIELD_BT = 5,
 }
 
+/// <summary>Command IDs that can be sent to the demuxer</summary>
+public enum AVFormatCommandID : int
+{
+    /// <summary>Send a RTSP `SET_PARAMETER` request to the server</summary>
+    @AVFORMAT_COMMAND_RTSP_SET_PARAMETER = 0,
+}
+
 /// <summary>@{ AVFrame is an abstraction for reference-counted raw multimedia data.</summary>
 public enum AVFrameSideDataType : int
 {
@@ -1044,6 +1084,8 @@ public enum AVFrameSideDataType : int
     @AV_FRAME_DATA_VIEW_ID = 29,
     /// <summary>This side data contains information about the reference display width(s) and reference viewing distance(s) as well as information about the corresponding reference stereo pair(s), i.e., the pair(s) of views to be displayed for the viewer&apos;s left and right eyes on the reference display at the reference viewing distance. The payload is the AV3DReferenceDisplaysInfo struct defined in libavutil/tdrdi.h.</summary>
     @AV_FRAME_DATA_3D_REFERENCE_DISPLAYS = 30,
+    /// <summary>Extensible image file format metadata. The payload is a buffer containing EXIF metadata, starting with either 49 49 2a 00, or 4d 4d 00 2a.</summary>
+    @AV_FRAME_DATA_EXIF = 31,
 }
 
 /// <summary>Option for overlapping elliptical pixel selectors in an image.</summary>
@@ -1270,8 +1312,10 @@ public enum AVPacketSideDataType : int
     @AV_PKT_DATA_3D_REFERENCE_DISPLAYS = 38,
     /// <summary>Contains the last received RTCP SR (Sender Report) information in the form of the AVRTCPSenderReport struct.</summary>
     @AV_PKT_DATA_RTCP_SR = 39,
+    /// <summary>Extensible image file format metadata. The payload is a buffer containing EXIF metadata, starting with either 49 49 2a 00, or 4d 4d 00 2a.</summary>
+    @AV_PKT_DATA_EXIF = 40,
     /// <summary>The number of side data types. This is not part of the public API/ABI in the sense that it may change when new side data types are added. This must stay the last enum value. If its value becomes huge, some code using it needs to be updated as it assumes it to be smaller than other limits.</summary>
-    @AV_PKT_DATA_NB = 40,
+    @AV_PKT_DATA_NB = 41,
 }
 
 /// <summary>@{</summary>
@@ -2026,6 +2070,7 @@ public enum SwsAlphaBlend : int
     @SWS_ALPHA_BLEND_UNIFORM = 1,
     @SWS_ALPHA_BLEND_CHECKERBOARD = 2,
     @SWS_ALPHA_BLEND_NB = 3,
+    @SWS_ALPHA_BLEND_MAX_ENUM = 2147483647,
 }
 
 /// <summary>**************************** Flags and quality settings * ****************************</summary>
@@ -2038,6 +2083,7 @@ public enum SwsDither : int
     @SWS_DITHER_A_DITHER = 4,
     @SWS_DITHER_X_DITHER = 5,
     @SWS_DITHER_NB = 6,
+    @SWS_DITHER_MAX_ENUM = 2147483647,
 }
 
 public enum SwsFlags : int
@@ -2076,6 +2122,8 @@ public enum SwsFlags : int
     @SWS_ACCURATE_RND = 262144,
     /// <summary>Force bit-exact output. This will prevent the use of platform-specific optimizations that may lead to slight difference in rounding, in favor of always maintaining exact bit output compatibility with the reference C code.</summary>
     @SWS_BITEXACT = 524288,
+    /// <summary>Allow using experimental new code paths. This may be faster, slower, or produce different output, with semantics subject to change at any point in time. For testing and debugging purposes only.</summary>
+    @SWS_UNSTABLE = 1048576,
     /// <summary>This flag has no effect</summary>
     @SWS_DIRECT_BGR = 32768,
     /// <summary>Set `SwsContext.dither` instead</summary>

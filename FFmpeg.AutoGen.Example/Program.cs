@@ -6,8 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
-using FFmpeg.AutoGen.Abstractions;
-using FFmpeg.AutoGen.Bindings.DynamicallyLoaded;
+using FFmpeg.AutoGen;
 using SkiaSharp;
 
 namespace FFmpeg.AutoGen.Example;
@@ -22,7 +21,16 @@ internal class Program
         FFmpegBinariesHelper.RegisterFFmpegBinaries();
 
         DynamicallyLoadedBindings.ThrowErrorIfFunctionNotFound = true;
-        DynamicallyLoadedBindings.Initialize();
+        if (!DynamicallyLoadedBindings.TryInitialize())
+        {
+            foreach (var item in ffmpeg.BindingVerificationResult.Failures)
+            {
+                Console.WriteLine($"{item.FunctionName} in {item.LibraryName} failed: {item.Message}");
+            }
+            throw new InvalidOperationException("Failed to initialize FFmpeg dynamically loaded bindings. See console for more details.");
+
+        }
+        Console.WriteLine($"DynamicallyLoadedBindings.ValidateLibraryVersion: {DynamicallyLoadedBindings.ValidateLibraryVersion()}");
 
         Console.WriteLine($"FFmpeg version info: {ffmpeg.av_version_info()}");
 
@@ -30,7 +38,7 @@ internal class Program
         ConfigureHWDecoder(out var deviceType);
 
         Directory.CreateDirectory("frames");
-        
+
         Console.WriteLine("Decoding...");
         DecodeAllFramesToImages(deviceType);
 
@@ -100,7 +108,7 @@ internal class Program
     private static unsafe void DecodeAllFramesToImages(AVHWDeviceType HWDevice)
     {
         // decode all frames from url, please not it might local resorce, e.g. string url = "../../sample_mpeg4.mp4";
-        
+
         var url = "https://lorem.video/1280x720"; // be advised this file holds 1440 frames
         using var vsd = new VideoStreamDecoder(url, HWDevice);
 
@@ -174,8 +182,8 @@ internal class Program
             var bitmapData = bitmap.Bytes;
             fixed (byte* pBitmapData = bitmapData)
             {
-                var data = new byte_ptr8 { [0] = pBitmapData };
-                var linesize = new int8 { [0] = bitmapData.Length / sourceSize.Height };
+                var data = new byte_ptrArray8 { [0] = pBitmapData };
+                var linesize = new int_array8 { [0] = bitmapData.Length / sourceSize.Height };
                 var frame = new AVFrame
                 {
                     data = data,

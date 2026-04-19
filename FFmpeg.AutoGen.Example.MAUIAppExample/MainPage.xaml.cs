@@ -8,17 +8,40 @@ namespace FFmpeg.AutoGen.Example.MAUIAppExample
         public MainPage()
         {
             InitializeComponent();
-            string verStr = string.Empty;
-            try
-            {
-                verStr = $"FFmpeg library: version {ffmpeg.av_version_info()}, {ffmpeg.avcodec_license()}\r\nconfiguration:{ffmpeg.avcodec_configuration()}\r\nThis will become the video's info you selected later on.";
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-                verStr = $"Error getting FFmpeg version info: {ex.Message}";
-            }
-            FFmpegInfoEntry.Text = verStr;
+            //Task.Run(() =>
+            //{
+            //    if (DynamicallyLoadedBindings.TryInitialize())
+            //    {
+            //        string verStr = string.Empty;
+            //        try
+            //        {
+            //            verStr = $"FFmpeg library: version {ffmpeg.av_version_info()}, {ffmpeg.avcodec_license()}\r\nconfiguration:{ffmpeg.avcodec_configuration()}\r\nThis will become the video's info you selected later on.";
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Debug.WriteLine(ex.ToString());
+            //            verStr = $"Error getting FFmpeg version info: {ex.Message}";
+            //        }
+            //        Dispatcher.Dispatch(() => FFmpegInfoEntry.Text = verStr);
+            //    }
+            //    else
+            //    {
+            //        string errorStr = "Failed to initialize FFmpeg dynamically loaded bindings.\r\n";
+            //        if (ffmpeg.BindingVerificationResult != null)
+            //        {
+            //            foreach (var item in ffmpeg.BindingVerificationResult.Failures)
+            //            {
+            //                errorStr += $"{item.FunctionName} in {item.LibraryName} failed: {item.Message}\r\n";
+            //            }
+            //        }
+            //        else
+            //        {
+            //            errorStr += "No binding verification result available.";
+            //        }
+            //        Dispatcher.Dispatch(() => DisplayAlertAsync("Error", errorStr, "OK"));
+            //    }
+
+            //}).ContinueWith((_) => Dispatcher.Dispatch(() => LoadingIndicator.IsRunning = false));
         }
 
         string inPath = string.Empty;
@@ -48,7 +71,7 @@ namespace FFmpeg.AutoGen.Example.MAUIAppExample
                 }
                 catch (Exception ex)
                 {
-                    await DisplayAlert("Error", $"Failed to open video file: {ex.Message}", "OK");
+                    await DisplayAlertAsync("Error", $"Failed to open video file: {ex.Message}", "OK");
                 }
             }
         }
@@ -59,7 +82,7 @@ namespace FFmpeg.AutoGen.Example.MAUIAppExample
             {
                 if (VideoDecoder == null)
                 {
-                    DisplayAlert("Error", "No video loaded. Please open a video file first.", "OK");
+                    DisplayAlertAsync("Error", "No video loaded. Please open a video file first.", "OK");
                     return;
                 }
                 try
@@ -69,13 +92,13 @@ namespace FFmpeg.AutoGen.Example.MAUIAppExample
                 }
                 catch (Exception ex)
                 {
-                    DisplayAlert("Error", $"Failed to extract frame: {ex.Message}", "OK");
+                    DisplayAlertAsync("Error", $"Failed to extract frame: {ex.Message}", "OK");
                 }
 
             }
             else
             {
-                DisplayAlert("Error", "Invalid frame index. Please enter a valid number.", "OK");
+                DisplayAlertAsync("Error", "Invalid frame index. Please enter a valid number.", "OK");
             }
         }
     }

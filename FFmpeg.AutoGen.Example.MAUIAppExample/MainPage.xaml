@@ -7,6 +7,7 @@
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
+            <ActivityIndicator x:Name="LoadingIndicator" IsRunning="True"/>
             <Label x:Name="FFmpegInfoEntry" Text="FFmpeg's info will appear here"/>
             <Button Text="1. Click here to open a video" x:Name="OpenVideoBtn" Clicked="OpenVideoBtn_Clicked"/>
             <Entry x:Name="VideoPathEntry" Placeholder="Video path will appear here" IsReadOnly="True"/>

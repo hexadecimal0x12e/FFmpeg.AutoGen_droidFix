@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using FFmpeg.AutoGen.Abstractions;
+using FFmpeg.AutoGen;
 
 namespace FFmpeg.AutoGen.Example;
 

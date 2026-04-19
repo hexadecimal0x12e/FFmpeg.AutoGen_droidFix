@@ -44,12 +44,6 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
-		<PublishAot>true</PublishAot>
-	</PropertyGroup>
-	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'android'">
-		<PublishAot>false</PublishAot>
-	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
@@ -78,7 +72,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\FFmpeg.AutoGen\FFmpeg.AutoGen.csproj" />
+		<!--<ProjectReference Include="..\FFmpeg.AutoGen\FFmpeg.AutoGen.csproj" />-->
+		<PackageReference Include="FFmpeg.AutoGen" Version="8.0.0.1" />
 	</ItemGroup>
 
 </Project>

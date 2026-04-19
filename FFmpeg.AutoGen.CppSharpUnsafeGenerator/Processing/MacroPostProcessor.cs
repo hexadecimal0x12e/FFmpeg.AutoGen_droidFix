@@ -13,6 +13,10 @@ internal class MacroPostProcessor
 {
     private static readonly Regex EolEscapeRegex =
         new(@"\\\s*[\r\n|\r|\n]\s*", RegexOptions.Compiled | RegexOptions.Multiline);
+    private static readonly Regex MacroParameterListPrefixRegex =
+        new(@"^\(\s*[A-Za-z_][A-Za-z0-9_]*(\s*,\s*[A-Za-z_][A-Za-z0-9_]*)*\s*\)\s+", RegexOptions.Compiled);
+    private static readonly Regex NumberIdentifierMixRegex =
+        new(@"\b\d+[A-Za-z_][A-Za-z0-9_]*\b", RegexOptions.Compiled);
 
     private readonly ProcessingContext _context;
     private Dictionary<string, IExpression> _macroExpressionMap;
@@ -26,7 +30,14 @@ internal class MacroPostProcessor
         foreach (var macro in macros)
             try
             {
-                _macroExpressionMap.Add(macro.Name, ClangMacroParser.Parser.Parse(macro.Expression));
+                var expression = CleanUp(macro.Expression);
+                if (IsLikelyUnsupportedMacroExpression(expression))
+                {
+                    Trace.TraceError($"Skip unsupported macro expression: {expression}");
+                    continue;
+                }
+
+                _macroExpressionMap.Add(macro.Name, ClangMacroParser.Parser.Parse(expression));
             }
             catch (NotSupportedException)
             {
@@ -38,6 +49,48 @@ internal class MacroPostProcessor
             }
 
         foreach (var macro in macros) Process(macro);
+    }
+
+    private static bool IsLikelyUnsupportedMacroExpression(string expression)
+    {
+        if (string.IsNullOrWhiteSpace(expression)) return true;
+
+        return expression.Contains("?")
+               || expression.Contains("{")
+               || expression.Contains("}")
+               || expression.Contains("#")
+               || expression.Contains("...")
+               || expression.Contains("[")
+               || expression.Contains("]")
+               || expression.Contains("__attribute__")
+               || expression.Contains("_Pragma")
+               || expression.Contains("AV_PIX_FMT_NE(")
+               || HasAssignmentOperator(expression)
+               || MacroParameterListPrefixRegex.IsMatch(expression)
+               || HasNumberIdentifierMix(expression);
+    }
+
+    private static bool HasAssignmentOperator(string expression)
+    {
+        if (!expression.Contains("=")) return false;
+
+        return !expression.Contains("==")
+               && !expression.Contains("!=")
+               && !expression.Contains(">=")
+               && !expression.Contains("<=");
+    }
+
+    private static bool HasNumberIdentifierMix(string expression)
+    {
+        foreach (Match match in NumberIdentifierMixRegex.Matches(expression))
+        {
+            var value = match.Value;
+            if (Regex.IsMatch(value, @"^0[xX][0-9a-fA-F]+[uUlLfFdD]*$")) continue;
+            if (Regex.IsMatch(value, @"^\d+[uUlLfFdD]*$")) continue;
+            return true;
+        }
+
+        return false;
     }
 
     private void Process(MacroDefinition macro)

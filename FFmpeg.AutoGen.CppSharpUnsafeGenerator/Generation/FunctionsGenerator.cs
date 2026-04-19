@@ -73,13 +73,14 @@ internal sealed class FunctionsGenerator : GeneratorBase<ExportFunctionDefinitio
 
         if (IsStaticallyLinkedGenerationOn || IsDynamicallyLinkedGenerationOn || IsDynamicallyLoadedGenerationOn)
         {
-            WriteLine("public unsafe static void Initialize()");
+            WriteLine("/// <summary>");
+            WriteLine("/// Initializes the function pointers. <b>DO NOT CALL THIS except you have initialized the <see cref=\"FunctionResolver\" />.</b>");
+            WriteLine("/// </summary>");
+            WriteLine("public unsafe static void InitializeInternal()");
 
             using (BeginBlock())
                 if (IsDynamicallyLoadedGenerationOn)
                 {
-                    WriteLine("if (FunctionResolver == null) FunctionResolver = FunctionResolverFactory.Create();");
-                    WriteLine();
                     functions.ToList().ForEach(GenerateDynamicallyLoaded);
                 }
                 else
@@ -145,7 +146,7 @@ internal sealed class FunctionsGenerator : GeneratorBase<ExportFunctionDefinitio
             var functionDelegateName = GetFunctionDelegateName(function);
             var functionPointerName = $"{function.Name}_ptr";
             WriteLine($"var {functionPointerName} = FunctionResolver.GetFunctionPointer(\"{function.LibraryName}\", \"{function.Name}\", ThrowErrorIfFunctionNotFound);");
-            WriteLine($"{functionFieldName} = {functionPointerName} == IntPtr.Zero ? delegate {{ throw new NotSupportedException(); }} : Marshal.GetDelegateForFunctionPointer<vectors.{functionDelegateName}>({functionPointerName});");
+            WriteLine($"{functionFieldName} = {functionPointerName} == IntPtr.Zero ? delegate {{ if (ffmpeg.BindingVerificationResult?.IsAPISuccess(\"{function.LibraryName}\", \"{function.Name}\") ?? false) throw new EntryPointNotFoundException(\"Could not found the function '{function.Name}' in library '{function.LibraryName}'.\");  throw new NotSupportedException(\"Failed to get the specific function's native pointer.\");  }} : Marshal.GetDelegateForFunctionPointer<vectors.{functionDelegateName}>({functionPointerName});");
             var returnCommand = function.ReturnType.Name == "void" ? string.Empty : "return ";
             var parameterNames = ParametersHelper.GetParameterNames(function.Parameters);
             WriteLine($"{returnCommand}{functionFieldName}({parameterNames});");
