@@ -1,14 +1,14 @@
-﻿using System;
+﻿using FFmpeg.AutoGen.Bindings.DynamicallyLoaded;
+using SkiaSharp;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
-using FFmpeg.AutoGen.Abstractions;
-using FFmpeg.AutoGen.Bindings.DynamicallyLoaded;
-using SkiaSharp;
 
 namespace FFmpeg.AutoGen.Example;
 
@@ -20,10 +20,38 @@ internal class Program
         Console.WriteLine("Running in {0}-bit mode.", Environment.Is64BitProcess ? "64" : "32");
 
         FFmpegBinariesHelper.RegisterFFmpegBinaries();
-        
-        DynamicallyLoadedBindings.Initialize();
 
-        Console.WriteLine($"FFmpeg version info: {ffmpeg.av_version_info()}");
+        if (DynamicallyLoadedBindings.TryInitialize())
+        {
+            string verStr = string.Empty;
+            try
+            {
+                verStr = $"FFmpeg library: version {ffmpeg.av_version_info()}, {ffmpeg.avcodec_license()}\r\nconfiguration:{ffmpeg.avcodec_configuration()}";
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                verStr = $"Error getting FFmpeg version info: {ex.Message}";
+            }
+            Console.WriteLine(verStr);
+        }
+        else
+        {
+            string errorStr = "Failed to initialize FFmpeg dynamically loaded bindings.\r\n";
+            if (ffmpeg.BindingVerificationResult != null)
+            {
+                foreach (var item in ffmpeg.BindingVerificationResult.Failures)
+                {
+                    errorStr += $"{item.FunctionName} in {item.LibraryName} failed: {item.Message}\r\n";
+                }
+            }
+            else
+            {
+                errorStr += "No binding verification result available.";
+            }
+            Console.WriteLine(errorStr);
+            return;
+        }
 
         SetupLogging();
         ConfigureHWDecoder(out var deviceType);
@@ -173,8 +201,8 @@ internal class Program
             var bitmapData = bitmap.Bytes;
             fixed (byte* pBitmapData = bitmapData)
             {
-                var data = new byte_ptr8 { [0] = pBitmapData };
-                var linesize = new int8 { [0] = bitmapData.Length / sourceSize.Height };
+                var data = new byte_ptrArray8 { [0] = pBitmapData };
+                var linesize = new int_array8 { [0] = bitmapData.Length / sourceSize.Height };
                 var frame = new AVFrame
                 {
                     data = data,

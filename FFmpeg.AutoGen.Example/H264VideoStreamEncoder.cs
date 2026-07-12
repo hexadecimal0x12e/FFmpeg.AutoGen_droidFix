@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using FFmpeg.AutoGen.Abstractions;
 
 namespace FFmpeg.AutoGen.Example;
 

@@ -73,17 +73,27 @@ internal sealed class FunctionsGenerator : GeneratorBase<ExportFunctionDefinitio
 
         if (IsStaticallyLinkedGenerationOn || IsDynamicallyLinkedGenerationOn || IsDynamicallyLoadedGenerationOn)
         {
-            WriteLine("public unsafe static void Initialize()");
+            WriteLine("/// <summary>");
+            WriteLine("/// Generates the function bindings. ");
+            WriteLine("/// </summary>");
+            WriteLine("/// <remarks>");
+            WriteLine("/// <b>DO NOT CALL THIS except you have initialized the <see cref=\"FunctionResolver\" />.</b>");
+            WriteLine("/// </remarks>");
+            WriteLine("public unsafe static void LoadBinding()");
 
             using (BeginBlock())
+            {
                 if (IsDynamicallyLoadedGenerationOn)
                 {
-                    WriteLine("if (FunctionResolver == null) FunctionResolver = FunctionResolverFactory.Create();");
-                    WriteLine();
                     functions.ToList().ForEach(GenerateDynamicallyLoaded);
                 }
                 else
+                {
                     functions.ToList().ForEach(f => WriteLine($"vectors.{f.Name} = {f.Name};"));
+                }
+                WriteLine("ffmpeg.Ready = true;");
+            }
+                
         }
     }
 
@@ -143,8 +153,11 @@ internal sealed class FunctionsGenerator : GeneratorBase<ExportFunctionDefinitio
         using (BeginBlock(true))
         {
             var functionDelegateName = GetFunctionDelegateName(function);
-            var getDelegate = $"FunctionResolver.GetFunctionDelegate<vectors.{functionDelegateName}>(\"{function.LibraryName}\", \"{function.Name}\", ThrowErrorIfFunctionNotFound)";
-            WriteLine($"{functionFieldName} = {getDelegate} ?? delegate {{ throw new NotSupportedException(); }};");
+            var functionPointerName = $"{function.Name}_native_ptr";
+            WriteLine($"var {functionPointerName} = FunctionResolver.GetFunctionPointer(\"{function.LibraryName}\", \"{function.Name}\", ThrowErrorIfFunctionNotFound);");
+            WriteLine($"{functionFieldName} = {functionPointerName} == IntPtr.Zero ");
+            WriteLine($"    ? throw new EntryPointNotFoundException(\"Could not find the function '{function.Name}' in the '{function.LibraryName}' using. Is you using the full edition of FFmpeg?\")");   
+            WriteLine($"    : Marshal.GetDelegateForFunctionPointer<vectors.{functionDelegateName}>({functionPointerName});");
             var returnCommand = function.ReturnType.Name == "void" ? string.Empty : "return ";
             var parameterNames = ParametersHelper.GetParameterNames(function.Parameters);
             WriteLine($"{returnCommand}{functionFieldName}({parameterNames});");

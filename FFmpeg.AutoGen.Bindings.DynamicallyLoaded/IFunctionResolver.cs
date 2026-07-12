@@ -1,4 +1,6 @@
-﻿namespace FFmpeg.AutoGen.Bindings.DynamicallyLoaded;
+﻿using System;
+
+namespace FFmpeg.AutoGen.Bindings.DynamicallyLoaded;
 
 /// <summary>
 ///     Supports loading functions from native libraries. Provides a more flexible alternative to P/Invoke.
@@ -6,11 +8,9 @@
 public interface IFunctionResolver
 {
     /// <summary>
-    ///     Creates a delegate which invokes a native function.
+    ///     Get the delegate's native function pointer.
+    ///     A AOT-friendly implementation.
     /// </summary>
-    /// <typeparam name="T">
-    ///     The function delegate.
-    /// </typeparam>
     /// <param name="libraryName">
     ///     The library name which contains the function.
     /// </param>
@@ -20,5 +20,6 @@ public interface IFunctionResolver
     /// <returns>
     ///     A new delegate which points to the native function.
     /// </returns>
-    T GetFunctionDelegate<T>(string libraryName, string functionName, bool throwOnError = true);
+    IntPtr GetFunctionPointer(string libraryName, string functionName, bool throwOnError = true);
+
 }

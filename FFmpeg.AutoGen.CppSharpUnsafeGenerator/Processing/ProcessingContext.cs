@@ -13,6 +13,7 @@ internal sealed record ProcessingContext
     public Dictionary<string, FunctionExport> FunctionExportMap { get; init; } = new();
     public List<IDefinition> Definitions { get; init; } = new();
     public bool NoCustomStringMarshal { get; init; } = false;
+    public bool AllowUnexportedFunctions { get; init; } = false;
 
     public void AddDefinition(IDefinition definition)
     {

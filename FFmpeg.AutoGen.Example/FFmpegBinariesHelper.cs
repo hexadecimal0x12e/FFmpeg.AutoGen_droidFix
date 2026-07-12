@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using FFmpeg.AutoGen.Bindings.DynamicallyLoaded;
 
 namespace FFmpeg.AutoGen.Example;
 
@@ -21,7 +20,7 @@ public class FFmpegBinariesHelper
                 if (Directory.Exists(ffmpegBinaryPath))
                 {
                     Console.WriteLine($"FFmpeg binaries found in: {ffmpegBinaryPath}");
-                    DynamicallyLoadedBindings.LibrariesPath = ffmpegBinaryPath;
+                    ffmpeg.RootPath = ffmpegBinaryPath;
                     return;
                 }
 

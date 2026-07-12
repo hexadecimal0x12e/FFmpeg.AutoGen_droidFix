@@ -5261,7 +5261,13 @@ public static unsafe partial class DynamicallyLinkedBindings
     [DllImport("swscale-9", CallingConvention = CallingConvention.Cdecl)]
     public static extern uint swscale_version();
     
-    public unsafe static void Initialize()
+    /// <summary>
+    /// Generates the function bindings. 
+    /// </summary>
+    /// <remarks>
+    /// <b>DO NOT CALL THIS except you have initialized the <see cref="FunctionResolver" />.</b>
+    /// </remarks>
+    public unsafe static void LoadBinding()
     {
         vectors.av_add_index_entry = av_add_index_entry;
         vectors.av_add_q = av_add_q;
@@ -5991,5 +5997,6 @@ public static unsafe partial class DynamicallyLinkedBindings
         vectors.swscale_configuration = swscale_configuration;
         vectors.swscale_license = swscale_license;
         vectors.swscale_version = swscale_version;
+        ffmpeg.Ready = true;
     }
 }

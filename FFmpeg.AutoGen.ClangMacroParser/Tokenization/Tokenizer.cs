@@ -108,7 +108,6 @@ namespace FFmpeg.AutoGen.ClangMacroParser.Tokenization
             while (CanRead())
             {
                 var c = Current();
-
                 if (Separators.Contains(c)) Skip(Separators.Contains);
                 else if (IsNumberStart(c))
                 {

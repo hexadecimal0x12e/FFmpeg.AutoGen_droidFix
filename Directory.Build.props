@@ -1,28 +1,27 @@
 <Project>
-  <PropertyGroup>
-    <PackageId>$(AssemblyName)</PackageId>
-    <Version>8.1.0.0</Version>
-    <Authors>Ruslan Balanukhin</Authors>
-    <Company>Rationale One</Company>
-    <Product>FFmpeg.AutoGen</Product>
-    <Copyright>Copyright © Ruslan Balanukhin 2025 All rights reserved.</Copyright>
-    <PackageProjectUrl>https://github.com/Ruslan-B/FFmpeg.AutoGen</PackageProjectUrl>
-    <RepositoryType>Git</RepositoryType>
-    <AssemblyVersion>$(Version)</AssemblyVersion>
-    <FileVersion>$(Version)</FileVersion>
-    <PackageTags>ffmpeg</PackageTags>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<PropertyGroup>
+		<PackageId>$(AssemblyName)</PackageId>
+		<Version>8.1.0.2</Version>
+		<Authors>hexadecimal0x12e</Authors>
+		<Company>hexadecimal0x12e</Company>
+		<Copyright>Copyright © hexadecimal0x12e 2025-2026 All rights reserved.</Copyright>
+		<PackageProjectUrl>https://github.com/hexadecimal0x12e/FFmpeg.AutoGen_droidFix</PackageProjectUrl>
+		<RepositoryType>Git</RepositoryType>
+		<AssemblyVersion>$(Version)</AssemblyVersion>
+		<FileVersion>$(Version)</FileVersion>
+		<PackageTags>ffmpeg</PackageTags>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
-    <None Include="$(MSBuildThisFileDirectory)README.md" Link="README.md" Pack="true" PackagePath="" />
-  </ItemGroup>
-  
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
+		<None Include="$(MSBuildThisFileDirectory)README.md" Link="README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
 </Project>

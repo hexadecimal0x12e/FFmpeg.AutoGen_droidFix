@@ -1,20 +1,32 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace FFmpeg.AutoGen.Native;
 
-public class WindowsFunctionResolver : FunctionResolverBase
+public partial class WindowsFunctionResolver : FunctionResolverBase
 {
     private const string Kernel32 = "kernel32";
 
-    protected override string GetNativeLibraryName(string libraryName, int version) => $"{libraryName}-{version}.dll";
+    protected override string GetNativeLibraryName(string libraryName, int version, bool addVersionSuffixToLibraryPath) => addVersionSuffixToLibraryPath ? $"{libraryName}-{version}.dll" : $"{libraryName}.dll";
 
-    protected override IntPtr LoadNativeLibrary(string libraryName) => LoadLibrary(libraryName);
-    protected override IntPtr FindFunctionPointer(IntPtr nativeLibraryHandle, string functionName) => GetProcAddress(nativeLibraryHandle, functionName);
+    protected override IntPtr LoadNativeLibrary(string libraryName)
+    {
+        IntPtr handle = LoadLibrary(libraryName);
+
+        if (handle == IntPtr.Zero)
+        {
+            int errorCode = Marshal.GetLastWin32Error();
+            string errorMessage = new System.ComponentModel.Win32Exception(errorCode).Message;
+            throw new DllNotFoundException($"Failed to load native library '{libraryName}'. Error code: 0x{errorCode:X}, Message: {errorMessage}");
+        }
+
+        return handle;
+    }
+    protected override IntPtr GetFunctionPointer(IntPtr nativeLibraryHandle, string functionName) => GetProcAddress(nativeLibraryHandle, functionName);
 
 
-    [DllImport(Kernel32, CharSet = CharSet.Ansi, BestFitMapping = false)]
-    public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
+    [LibraryImport(Kernel32, EntryPoint = "GetProcAddress", StringMarshalling = StringMarshalling.Utf8)]
+    public static partial IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
 
     /// <summary>
     ///     Loads the specified module into the address space of the calling process. The specified module may cause other
@@ -55,6 +67,6 @@ public class WindowsFunctionResolver : FunctionResolverBase
     ///     <see cref="Marshal.GetLastWin32Error" />.
     /// </returns>
     /// <seealso href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684175(v=vs.85).aspx" />
-    [DllImport(Kernel32, SetLastError = true)]
-    public static extern IntPtr LoadLibrary(string dllToLoad);
+    [LibraryImport(Kernel32, EntryPoint = "LoadLibraryW", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
+    public static partial IntPtr LoadLibrary(string dllToLoad);
 }

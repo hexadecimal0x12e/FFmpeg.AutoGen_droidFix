@@ -12,7 +12,7 @@ public static partial class ffmpeg
     public static readonly int EINVAL = 22;
 
     public static readonly int EPIPE = 32;
-    
+
     static ffmpeg()
     {
 #if NET
@@ -46,4 +46,6 @@ public static partial class ffmpeg
 
     public static string AV_VERSION<T1, T2, T3>(T1 a, T2 b, T3 c)
         => AV_VERSION_DOT(a, b, c);
+
+    public static bool Ready { get; set; } = false;
 }

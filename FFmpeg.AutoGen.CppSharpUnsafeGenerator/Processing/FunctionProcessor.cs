@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -62,8 +63,33 @@ internal class FunctionProcessor
 
             if (!_context.FunctionExportMap.TryGetValue(functionName, out var export))
             {
-                Console.WriteLine($"Export not found. Skipping {functionName} function.");
-                continue;
+                if (_context.AllowUnexportedFunctions)
+                {
+                    Console.WriteLine($"Export not found. Using fallback metadata for {functionName} function.");
+                    export = new FunctionExport
+                    {
+                        Name = functionName,
+                        LibraryName = InferLibraryName(functionName, translationUnit.FileName),
+                        LibraryVersion = 0
+                    };
+                }
+                else
+                {
+                    Console.WriteLine($"Export not found. Skipping {functionName} function.");
+                    continue;
+                }
+            }
+
+            var preferredLibraryFromHeader = InferLibraryFromTranslationUnitPath(translationUnit.FileName);
+            if (!string.IsNullOrEmpty(preferredLibraryFromHeader) &&
+                !string.Equals(export.LibraryName, preferredLibraryFromHeader, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(export.LibraryName, "avutil", StringComparison.OrdinalIgnoreCase))
+            {
+                export = export with
+                {
+                    LibraryName = preferredLibraryFromHeader,
+                    LibraryVersion = ResolveLibraryVersion(preferredLibraryFromHeader, export.LibraryVersion)
+                };
             }
 
             var exportDefinition = new ExportFunctionDefinition
@@ -76,33 +102,82 @@ internal class FunctionProcessor
         }
     }
 
+    private static string InferLibraryName(string functionName, string translationUnitFileName)
+    {
+        functionName ??= string.Empty;
+        var normalizedFunctionName = functionName.ToLowerInvariant();
+
+        if (normalizedFunctionName.StartsWith("avcodec_") || normalizedFunctionName.StartsWith("av_parser_") || normalizedFunctionName.StartsWith("av_bsf_") || normalizedFunctionName.StartsWith("av_packet_")) return "avcodec";
+        if (normalizedFunctionName.StartsWith("avformat_") || normalizedFunctionName.StartsWith("avio_") || normalizedFunctionName.StartsWith("av_read_") || normalizedFunctionName.StartsWith("av_write_")) return "avformat";
+        if (normalizedFunctionName.StartsWith("avfilter_") || normalizedFunctionName.StartsWith("av_buffersrc_") || normalizedFunctionName.StartsWith("av_buffersink_")) return "avfilter";
+        if (normalizedFunctionName.StartsWith("avdevice_")) return "avdevice";
+        if (normalizedFunctionName.StartsWith("swr_")) return "swresample";
+        if (normalizedFunctionName.StartsWith("sws_")) return "swscale";
+        if (normalizedFunctionName.StartsWith("postproc_") || normalizedFunctionName.StartsWith("pp_")) return "postproc";
+
+        translationUnitFileName ??= string.Empty;
+
+        var normalizedPath = translationUnitFileName
+            .Replace('\\', '/')
+            .ToLowerInvariant();
+
+        if (normalizedPath.Contains("/libavutil/")) return "avutil";
+        if (normalizedPath.Contains("/libswresample/")) return "swresample";
+        if (normalizedPath.Contains("/libpostproc/")) return "postproc";
+        if (normalizedPath.Contains("/libswscale/")) return "swscale";
+        if (normalizedPath.Contains("/libavcodec/")) return "avcodec";
+        if (normalizedPath.Contains("/libavformat/")) return "avformat";
+        if (normalizedPath.Contains("/libavfilter/")) return "avfilter";
+        if (normalizedPath.Contains("/libavdevice/")) return "avdevice";
+
+        return "avutil";
+    }
+
+    private static string InferLibraryFromTranslationUnitPath(string translationUnitFileName)
+    {
+        translationUnitFileName ??= string.Empty;
+
+        var normalizedPath = translationUnitFileName
+            .Replace('\\', '/')
+            .ToLowerInvariant();
+
+        if (normalizedPath.Contains("/libswresample/")) return "swresample";
+        if (normalizedPath.Contains("/libpostproc/")) return "postproc";
+        if (normalizedPath.Contains("/libswscale/")) return "swscale";
+        if (normalizedPath.Contains("/libavcodec/")) return "avcodec";
+        if (normalizedPath.Contains("/libavformat/")) return "avformat";
+        if (normalizedPath.Contains("/libavfilter/")) return "avfilter";
+        if (normalizedPath.Contains("/libavdevice/")) return "avdevice";
+        if (normalizedPath.Contains("/libavutil/")) return "avutil";
+
+        return null;
+    }
+
+    private int ResolveLibraryVersion(string libraryName, int fallbackVersion)
+    {
+        if (string.IsNullOrWhiteSpace(libraryName)) return fallbackVersion;
+
+        var matchingVersion = _context.FunctionExportMap.Values
+            .Where(x => string.Equals(x.LibraryName, libraryName, StringComparison.OrdinalIgnoreCase))
+            .Select(x => x.LibraryVersion)
+            .DefaultIfEmpty(fallbackVersion)
+            .Max();
+
+        return matchingVersion;
+    }
+
     internal TypeDefinition GetDelegateType(FunctionType functionType, string name)
     {
         var @delegate = new DelegateDefinition
         {
             Name = $"{name}_func",
             FunctionName = name,
-            ReturnType = GetDelegateReturnType(functionType.ReturnType.Type, name),
+            ReturnType = GetReturnType(functionType.ReturnType.Type, name),
             Parameters = functionType.Parameters.Select(GetParameter).ToArray()
         };
         _context.AddDefinition(@delegate);
 
         return @delegate;
-    }
-
-    private TypeDefinition GetDelegateReturnType(Type type, string name)
-    {
-        // For delegates (function pointers), const char* must be byte* not string,
-        // because string marshaling does not work with unmanaged function pointers.
-        if (type is PointerType pointerType &&
-            pointerType.QualifiedPointee.Qualifiers.IsConst &&
-            pointerType.Pointee is BuiltinType builtinType &&
-            builtinType.Type == PrimitiveType.Char)
-        {
-            return new TypeDefinition { Name = "byte*" };
-        }
-
-        return GetReturnType(type, name);
     }
 
     private FunctionParameter GetParameter(Parameter parameter, int position)

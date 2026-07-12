@@ -68,6 +68,11 @@ public class CliOptions
         HelpText = "Don't use custom string marshallers; all strings are marshalled as UnmanagedType.LPUTF8Str regardless of .NET target framework.")]
     public bool NoCustomStringMarshal { get; set; }
 
+    [Option("allow-unexported-functions",
+        Default = false,
+        HelpText = "Allow generation of non-inline functions even when export symbols cannot be loaded from binaries.")]
+    public bool AllowUnexportedFunctions { get; set; }
+
     public static CliOptions ParseArgumentsStrict(string[] args)
     {
         var result = CommandLine.Parser.Default.ParseArguments<CliOptions>(args);

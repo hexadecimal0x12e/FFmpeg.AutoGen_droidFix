@@ -29,20 +29,26 @@ internal class Program
 
         // process
         var functionExports = FunctionExportHelper.LoadFunctionExports(options.FFmpegBinDir).ToArray();
+        if (functionExports.Length == 0 && !options.AllowUnexportedFunctions)
+            throw new InvalidOperationException(
+                "No exported functions were discovered from FFmpeg binaries. " +
+                "Make sure FFmpeg/bin/x64 contains versioned Windows DLLs (for example: avcodec-61.dll), " +
+                "or rerun with --allow-unexported-functions to generate from headers only.");
+
         var processingContext = new ProcessingContext
         {
             IgnoreUnitNames = new HashSet<string> { "__NSConstantString_tag" },
             TypeAliases = { { "int64_t", typeof(long) } },
             WellKnownMacros =
             {
-                { "FFERRTAG", typeof(int) }, 
+                { "FFERRTAG", typeof(int) },
                 { "MKTAG", typeof(int) },
                 { "UINT64_C", typeof(ulong) },
                 { "AV_VERSION_INT", typeof(int) },
                 { "AV_VERSION", typeof(string) },
-                { "_DHUGE_EXP", typeof(int) }, 
-                { "_DMAX", typeof(long) }, 
-                { "_FMAX", typeof(long) }, 
+                { "_DHUGE_EXP", typeof(int) },
+                { "_DMAX", typeof(long) },
+                { "_FMAX", typeof(long) },
                 { "_LMAX", typeof(long) }
             },
             FunctionExportMap = functionExports
@@ -50,7 +56,12 @@ internal class Program
                 .Select(x => x.First()) // Eliminate duplicated names
                 .ToDictionary(x => x.Name),
             NoCustomStringMarshal = options.NoCustomStringMarshal,
+            AllowUnexportedFunctions = options.AllowUnexportedFunctions,
         };
+        foreach (var (_, item) in processingContext.FunctionExportMap)
+        {
+            Console.WriteLine($"got {item.Name} exported from {item.LibraryName} v{item.LibraryVersion}");
+        }
         var processor = new ASTProcessor(processingContext);
         astContexts.ForEach(processor.Process);
 
@@ -76,6 +87,7 @@ internal class Program
         GenerateStaticallyLinkedBindings(generationContext);
         GenerateDynamicallyLinkedBindings(generationContext);
         GenerateDynamicallyLoadedBindings(generationContext);
+        GenerateDynamicallyLoadedBindingMap(generationContext, functionExports);
     }
 
     private static IEnumerable<ASTContext> Parse(string includesDir)
@@ -171,7 +183,8 @@ internal class Program
     {
         var context = baseContext with
         {
-            Namespace = $"{baseContext.Namespace}.Bindings.StaticallyLinked", TypeName = "StaticallyLinkedBindings",
+            Namespace = $"{baseContext.Namespace}.Bindings.StaticallyLinked",
+            TypeName = "StaticallyLinkedBindings",
             OutputDir = Path.Combine(baseContext.SolutionDir, @"FFmpeg.AutoGen.Bindings.StaticallyLinked\generated")
         };
         FunctionsGenerator.GenerateStaticallyLinked("StaticallyLinkedBindings.g.cs", context);
@@ -181,7 +194,8 @@ internal class Program
     {
         var context = baseContext with
         {
-            Namespace = $"{baseContext.Namespace}.Bindings.DynamicallyLinked", TypeName = "DynamicallyLinkedBindings",
+            Namespace = $"{baseContext.Namespace}.Bindings.DynamicallyLinked",
+            TypeName = "DynamicallyLinkedBindings",
             OutputDir = Path.Combine(baseContext.SolutionDir, @"FFmpeg.AutoGen.Bindings.DynamicallyLinked\generated")
         };
 
@@ -192,11 +206,22 @@ internal class Program
     {
         var context = baseContext with
         {
-            Namespace = $"{baseContext.Namespace}.Bindings.DynamicallyLoaded", TypeName = "DynamicallyLoadedBindings",
+            Namespace = $"{baseContext.Namespace}.Bindings.DynamicallyLoaded",
+            TypeName = "DynamicallyLoadedBindings",
             OutputDir = Path.Combine(baseContext.SolutionDir, @"FFmpeg.AutoGen.Bindings.DynamicallyLoaded\generated")
         };
 
         LibrariesGenerator.Generate("DynamicallyLoadedBindings.libraries.g.cs", context);
         FunctionsGenerator.GenerateDynamicallyLoaded("DynamicallyLoadedBindings.g.cs", context);
+    }
+
+    private static void GenerateDynamicallyLoadedBindingMap(GenerationContext baseContext, IEnumerable<FunctionExport> functionExports)
+    {
+        var context = baseContext with
+        {
+            OutputDir = Path.Combine(baseContext.SolutionDir, @"FFmpeg.AutoGen\generated")
+        };
+
+        FunctionBindingMapGenerator.Generate("DynamicallyLoadedBindingMap.g.cs", context, functionExports);
     }
 }
